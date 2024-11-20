@@ -1,40 +1,103 @@
-import { Button, Input, Label, SizableText, YStack } from "tamagui";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Button,
+  getTokens,
+  ScrollView,
+  SizableText,
+  Spinner,
+  YStack,
+} from "tamagui";
+import { z } from "zod";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { KeyboardAvoidingView, Platform } from "react-native";
+import { ErrorMessage, FormField } from "@/components/FormField";
+import { useCreateUser } from "@/hooks/use-create-user";
+import { useLogin } from "@/hooks/use-login";
+import { router } from "expo-router";
+
+const formSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email(),
+  password: z.string().min(4, "Password must be at least 4 characters"),
+});
 
 export default function Register() {
+  const { bottom: bottomInset } = useSafeAreaInsets();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+  });
+
+  const createUser = useCreateUser();
+  const login = useLogin();
+
+  const onSubmit = form.handleSubmit(async (data) => {
+    await createUser.mutateAsync(data);
+    await login.mutateAsync(data);
+    router.dismissAll();
+  });
+
   return (
-    <YStack padding="$4" gap="$8">
-      <YStack alignItems="center" paddingTop="$6">
-        <SizableText size="$14">🎉</SizableText>
-        <SizableText size="$8" textAlign="center">
-          Welcome to Festivo!
-        </SizableText>
-      </YStack>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <ScrollView>
+        <YStack
+          padding="$4"
+          paddingBottom={getTokens().space.$4.val + bottomInset}
+          gap="$8"
+        >
+          <YStack alignItems="center" paddingTop="$6">
+            <SizableText size="$14">🎉</SizableText>
+            <SizableText size="$8" textAlign="center">
+              Welcome to Festivo!
+            </SizableText>
+          </YStack>
 
-      <YStack gap="$2">
-        <YStack alignItems="stretch">
-          <Label htmlFor="name">Name</Label>
-          <Input id="name" textContentType="name" />
+          <YStack gap="$2">
+            <FormField
+              form={form}
+              label="Name"
+              name="name"
+              inputProps={{
+                textContentType: "name",
+              }}
+            />
+
+            <FormField
+              form={form}
+              label="Email"
+              name="email"
+              inputProps={{
+                keyboardType: "email-address",
+                textContentType: "emailAddress",
+                autoCapitalize: "none",
+              }}
+            />
+
+            <FormField
+              form={form}
+              label="Password"
+              name="password"
+              inputProps={{
+                secureTextEntry: true,
+                textContentType: "password",
+              }}
+            />
+          </YStack>
+
+          <Button
+            variant="outlined"
+            onPress={onSubmit}
+            icon={form.formState.isSubmitting ? <Spinner /> : null}
+          >
+            Sign up
+          </Button>
+
+          <ErrorMessage error={createUser.error ?? login.error} />
         </YStack>
-
-        <YStack alignItems="stretch">
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            keyboardType="email-address"
-            textContentType="emailAddress"
-            autoCapitalize="none"
-          />
-        </YStack>
-
-        <YStack alignItems="stretch">
-          <Label htmlFor="password">Password</Label>
-          <Input id="password" secureTextEntry textContentType="password" />
-        </YStack>
-      </YStack>
-
-      <Button backgroundColor="pink" disabled>
-        Sign up
-      </Button>
-    </YStack>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }

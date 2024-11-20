@@ -11,7 +11,12 @@ export default function RootLayout() {
       <QueryClientProvider client={queryClient}>
         <Stack>
           <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="login" />
+          <Stack.Screen
+            name="login"
+            options={{
+              title: "Sign in",
+            }}
+          />
         </Stack>
       </QueryClientProvider>
     </TamaguiProvider>
