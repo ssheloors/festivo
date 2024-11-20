@@ -1,16 +1,9 @@
 import { Stack } from "expo-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { config } from '@tamagui/config/v3';
-import { TamaguiProvider, createTamagui } from 'tamagui';
+import { TamaguiProvider, createTamagui } from "tamagui";
+import tamaguiConfig from "@/tamagui.config";
 
 const queryClient = new QueryClient();
-const tamaguiConfig = createTamagui(config)
-
-// TypeScript types across all Tamagui APIs
-type Conf = typeof tamaguiConfig
-declare module '@tamagui/core' {
-  interface TamaguiCustomConfig extends Conf { }
-}
 
 export default function RootLayout() {
   return (
@@ -18,8 +11,9 @@ export default function RootLayout() {
       <QueryClientProvider client={queryClient}>
         <Stack>
           <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="login" />
         </Stack>
       </QueryClientProvider>
-    </TamaguiProvider >
+    </TamaguiProvider>
   );
 }
