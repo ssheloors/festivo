@@ -1,6 +1,5 @@
 import { View, Text } from "react-native";
 import { Button, Input, TextArea, Label } from "tamagui";
-import DatePicker from 'react-native-date-picker'
 import React, { useState } from "react";
 import DateTimePicker from '@react-native-community/datetimepicker';
 
