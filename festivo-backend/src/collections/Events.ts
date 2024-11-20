@@ -7,6 +7,12 @@ export const Events: CollectionConfig = {
   },
   fields: [
     {
+      // Find a way to generate this automatically
+      name: 'eventCode',
+      type: 'number',
+      required: true
+    },
+    {
       name: 'title',
       type: 'text',
       required: true,
