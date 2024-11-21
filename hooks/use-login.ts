@@ -32,6 +32,7 @@ export function useLogin() {
       await storage.setString("payload-token", token);
 
       await queryClient.invalidateQueries({ queryKey: ["user"] });
+      await queryClient.invalidateQueries({ queryKey: ["user-token"] });
     },
   });
 }

@@ -14,7 +14,6 @@ import { KeyboardAvoidingView, Platform } from "react-native";
 import { ErrorMessage, FormField } from "@/components/FormField";
 import { useLogin } from "@/hooks/use-login";
 import { Link, router } from "expo-router";
-import { useUser } from "@/hooks/use-user";
 
 const formSchema = z.object({
   email: z.string().email(),

@@ -30,7 +30,6 @@ export function useUser() {
           },
         });
         const responseData = await req.json();
-        console.log(token, responseData);
         const { user } = meResponseSchema.parse(responseData);
 
         return user;
