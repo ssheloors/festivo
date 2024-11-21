@@ -1,16 +1,22 @@
 import { CollectionConfig } from 'payload'
+import ShortUniqueId from 'short-unique-id';
+
+const uid = new ShortUniqueId({ length: 6 });
 
 export const Events: CollectionConfig = {
   slug: 'event',
   access: {
     read: () => true,
+    create: () => true
   },
   fields: [
     {
-      // Find a way to generate this automatically
       name: 'eventCode',
-      type: 'number',
-      required: true
+      type: 'text', // Use 'text' instead of 'number' for unique ID
+      required: true,
+      admin: {
+        readOnly: true, // Make it read-only in the admin panel
+      },
     },
     {
       name: 'title',
@@ -44,4 +50,14 @@ export const Events: CollectionConfig = {
       hasMany: true,
     },
   ],
+  hooks: {
+    beforeChange: [
+      ({ data }) => {
+        if (!data.eventCode) {
+          data.eventCode = uid.rnd();
+        }
+        return data;
+      },
+    ],
+  },
 }
