@@ -1,19 +1,18 @@
-import { View, ScrollView, KeyboardAvoidingView, Platform, SafeAreaView } from "react-native";
+import { View, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { Button, Label, YStack, SizableText, TextArea, Text } from "tamagui";
 import React, { useState } from "react";
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { FormField } from "@/components/FormField";
 import { useForm } from "react-hook-form";
 import { Link, router } from "expo-router";
 import { useEventCreation } from "@/hooks/use-event-creation";
 import { useUser } from "@/hooks/use-user";
 import { date } from "zod";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { hide } from "expo-router/build/utils/splash";
 
 export default function EventCreation() {
   const form = useForm({ defaultValues: { title: "", address: "", description: "", eventDate: "" } });
-  // const showDatepicker = () => {
-  //   setShow(true);
-  // };
+
   const createEvent = useEventCreation();
   const { data: user, isLoading } = useUser();
 
@@ -34,35 +33,47 @@ export default function EventCreation() {
   if (isLoading) {
     return <SizableText>Loading...</SizableText>;
   }
-  const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState("date");
-  const [show, setShow] = useState(false);
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === "ios");
-    setDate(currentDate);
-    form.setValue("eventDate", currentDate);
+  const [eventDate, setEventDate] = useState(new Date());
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false); //for date picker
+  const [isTimePickerVisible, setTimePickerVisibility] = useState(false); //for time picker
+
+  // controller for the date
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
   };
 
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
   };
 
-  const showDatepicker = () => {
-    showMode("date");
+  // controller for the time
+  const showTimePicker = () => {
+    setTimePickerVisibility(true);
   };
 
-  const showTimepicker = () => {
-    showMode("time");
-  }
+  const hideTimePicker = () => {
+    setTimePickerVisibility(false);
+  };
+
+
+  const handleConfirm = (date: any) => {
+    setEventDate(date);
+    hideDatePicker();
+    hideTimePicker();
+    form.setValue("eventDate", date); //passing the full UTC date to the form
+  };
+
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <YStack
-             padding="$4"
-             gap="$2">
+          padding="$4"
+          gap="$2">
           <SizableText size="$9">Create an event</SizableText>
           <FormField
             form={form}
@@ -80,39 +91,42 @@ export default function EventCreation() {
               placeholder: "eg. Kungsportsplatsen 1",
             }}
           />
-          <Label>Event Date</Label>
-          <SafeAreaView>
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
-                mode={mode}
-                is24Hour={true}
-                display="default"
-                onChange={onChange}
-                minimumDate={new Date()}
-                />
-                <DateTimePicker
-                testID="dateTimePicker"
-                value={date}
+          <View style={{ display: "flex", flexDirection: "row" }}>
+            <View>
+              <Label>Date</Label>
+              <Button variant="outlined" onPress={showDatePicker}>{eventDate.toDateString()}</Button>
+              <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={handleConfirm}
+                onCancel={hideDatePicker}
+                minimumDate={eventDate}
+              />
+            </View>
+            <View>
+              <Label>Time</Label>
+              <Button variant="outlined" onPress={showTimePicker}>{eventDate.toLocaleTimeString()}</Button>
+              <DateTimePickerModal
+                isVisible={isTimePickerVisible}
                 mode="time"
-                is24Hour={true}
-                display="default"
-                onChange={onChange}
-                minimumDate={new Date()}
-                />
-                <Text>{date.toString()}</Text>
-            </SafeAreaView>
-
+                onConfirm={handleConfirm}
+                onCancel={hideTimePicker}
+                minimumDate={eventDate}
+              />
+            </View>
+          </View>
           <Label>Event description</Label>
           <TextArea
             placeholder="Event description"
+            height={100}
             onChangeText={(text) => form.setValue("description", text)}
-           />
-           
+          />
+
           <Button
             onPress={onSubmit}
           >Create event</Button>
         </YStack>
-    </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView >
   );
 }

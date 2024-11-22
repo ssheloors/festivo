@@ -104,6 +104,7 @@ export interface Media {
  */
 export interface Event {
   id: number;
+  eventCode: string;
   title: string;
   eventDate: string;
   description?: string | null;
@@ -228,6 +229,7 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "event_select".
  */
 export interface EventSelect<T extends boolean = true> {
+  eventCode?: T;
   title?: T;
   eventDate?: T;
   description?: T;
