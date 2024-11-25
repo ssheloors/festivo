@@ -9,6 +9,9 @@ import { useUser } from "@/hooks/use-user";
 import { date } from "zod";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { hide } from "expo-router/build/utils/splash";
+import { bold } from "colorette";
+import { ArrowRight } from 'lucide-react-native';
+
 
 export default function EventCreation() {
   const form = useForm({ defaultValues: { title: "", address: "", description: "", eventDate: "" } });
@@ -68,61 +71,67 @@ export default function EventCreation() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1 }}
+      style={{ flex: 1, backgroundColor: "white" }}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <YStack
           padding="$4"
           gap="$2">
-          <SizableText size="$9">Create an event</SizableText>
-          <FormField
-            form={form}
-            name="title"
-            label="Event title"
-            inputProps={{
-              placeholder: "eg. Bingo night",
-            }}
-          />
-          <FormField
-            form={form}
-            name="address"
-            label="Event address"
-            inputProps={{
-              placeholder: "eg. Kungsportsplatsen 1",
-            }}
-          />
-          <View style={{ display: "flex", flexDirection: "row" }}>
+          <SizableText size="$9" fontSize={32} fontWeight={"bold"}>Create an event</SizableText>
+          <View>
+            <FormField
+              form={form}
+              name="title"
+              label="Event title"
+              inputProps={{
+                placeholder: "eg. Bingo night",
+              }}
+            />
+            <FormField
+              form={form}
+              name="address"
+              label="Event address"
+              inputProps={{
+                placeholder: "eg. Kungsportsplatsen 1",
+              }}
+            />
             <View>
-              <Label>Date</Label>
-              <Button variant="outlined" onPress={showDatePicker}>{eventDate.toDateString()}</Button>
-              <DateTimePickerModal
-                isVisible={isDatePickerVisible}
-                mode="date"
-                onConfirm={handleConfirm}
-                onCancel={hideDatePicker}
-                minimumDate={eventDate}
-              />
+              <View style={{ display: "flex", flexDirection: "row" }}>
+                <View style={{ marginRight: 30 }}>
+                  <Label>Date</Label>
+                  <Button variant="outlined" onPress={showDatePicker}>{eventDate.toDateString()}</Button>
+                  <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
+                    mode="date"
+                    onConfirm={handleConfirm}
+                    onCancel={hideDatePicker}
+                    minimumDate={eventDate}
+                  />
+                </View>
+                <View>
+                  <Label>Time</Label>
+                  <Button variant="outlined" onPress={showTimePicker}>{eventDate.toLocaleTimeString()}</Button>
+                  <DateTimePickerModal
+                    isVisible={isTimePickerVisible}
+                    mode="time"
+                    onConfirm={handleConfirm}
+                    onCancel={hideTimePicker}
+                    minimumDate={eventDate}
+                  />
+                </View>
+              </View>
             </View>
-            <View>
-              <Label>Time</Label>
-              <Button variant="outlined" onPress={showTimePicker}>{eventDate.toLocaleTimeString()}</Button>
-              <DateTimePickerModal
-                isVisible={isTimePickerVisible}
-                mode="time"
-                onConfirm={handleConfirm}
-                onCancel={hideTimePicker}
-                minimumDate={eventDate}
-              />
-            </View>
+            <Label>Event description</Label>
+            <TextArea
+              placeholder="Event description"
+              height={100}
+              onChangeText={(text) => form.setValue("description", text)}
+            />
           </View>
-          <Label>Event description</Label>
-          <TextArea
-            placeholder="Event description"
-            height={100}
-            onChangeText={(text) => form.setValue("description", text)}
-          />
-
           <Button
+            iconAfter={<ArrowRight />}
+            backgroundColor={"#282828"}
+            color={"white"}
             onPress={onSubmit}
           >Create event</Button>
         </YStack>
