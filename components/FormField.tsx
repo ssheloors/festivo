@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import {
   Controller,
+  ControllerProps,
   FieldError,
   FieldValues,
   Path,
@@ -20,11 +21,21 @@ export function FormField<T extends FieldValues>({
   label,
   name,
   inputProps,
+  render,
 }: {
   form: UseFormReturn<T>;
   label: ReactNode;
   name: Path<T>;
-  inputProps: InputProps;
+  inputProps?: InputProps;
+  render?: (
+    props: {
+      inputProps: {
+        id: string;
+        onPress: (e: any) => void;
+        opacity: number;
+      };
+    } & Parameters<ControllerProps["render"]>[0]
+  ) => JSX.Element;
 }) {
   return (
     <YStack alignItems="stretch">
@@ -32,15 +43,32 @@ export function FormField<T extends FieldValues>({
       <Controller
         control={form.control}
         name={name}
-        render={({ field: { onChange, ...field } }) => (
-          <Input
-            id={name}
-            {...inputProps}
-            {...field}
-            onChangeText={onChange}
-            opacity={field.disabled ? 0.5 : 1}
-          />
-        )}
+        render={({ field: { onChange, ...field }, ...renderProps }) =>
+          render ? (
+            render({
+              inputProps: {
+                id: name,
+                onPress: (e) => {
+                  e.stopPropagation();
+                },
+                opacity: field.disabled ? 0.5 : 1,
+              },
+              field: { ...field, onChange },
+              ...renderProps,
+            })
+          ) : (
+            <Input
+              id={name}
+              onPress={(e) => {
+                e.stopPropagation();
+              }}
+              opacity={field.disabled ? 0.5 : 1}
+              {...inputProps}
+              {...field}
+              onChangeText={onChange}
+            />
+          )
+        }
       />
       <ErrorMessage
         error={form.formState.errors[name] as FieldError | undefined}

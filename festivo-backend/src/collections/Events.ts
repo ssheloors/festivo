@@ -1,13 +1,14 @@
 import { CollectionConfig } from 'payload'
-import ShortUniqueId from 'short-unique-id';
+import ShortUniqueId from 'short-unique-id'
 
-const uid = new ShortUniqueId({ length: 6 });
+const uid = new ShortUniqueId({ length: 6 })
+uid.setDictionary('alpha_upper')
 
 export const Events: CollectionConfig = {
   slug: 'event',
   access: {
     read: () => true,
-    create: () => true
+    create: () => true,
   },
   fields: [
     {
@@ -17,6 +18,7 @@ export const Events: CollectionConfig = {
       admin: {
         readOnly: true, // Make it read-only in the admin panel
       },
+      unique: true, // Make it unique
     },
     {
       name: 'title',
@@ -54,9 +56,9 @@ export const Events: CollectionConfig = {
     beforeChange: [
       ({ data }) => {
         if (!data.eventCode) {
-          data.eventCode = uid.rnd();
+          data.eventCode = uid.rnd()
         }
-        return data;
+        return data
       },
     ],
   },

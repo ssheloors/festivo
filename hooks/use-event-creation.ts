@@ -11,6 +11,7 @@ export function useEventCreation() {
       address: string;
       description?: string;
       eventDate: string;
+      organizer: number;
     }) => {
       return payload.collections.event.create({
         doc: {
@@ -18,6 +19,7 @@ export function useEventCreation() {
           address: formData.address,
           description: formData.description,
           eventDate: formData.eventDate,
+          organizer: formData.organizer,
         },
       });
     },
