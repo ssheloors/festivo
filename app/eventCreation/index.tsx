@@ -76,6 +76,7 @@ export default function EventCreation() {
 
   return (
     <KeyboardAvoidingView
+      keyboardVerticalOffset={Platform.select({ ios: 0, android: 500 })}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1, backgroundColor: "white" }}
     >
