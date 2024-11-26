@@ -174,8 +174,8 @@ export default function EventCreation() {
             </View>
             <Button
               iconAfter={<IconSymbol name="arrow.right" color="white" />}
-              backgroundColor={"#282828"}
-              color={"white"}
+              backgroundColor="#282828"
+              color="white"
               onPress={onSubmit}
             >
               Create event
