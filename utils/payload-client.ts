@@ -6,7 +6,8 @@ type Locales = "en";
 
 export type PayloadConfig = Config;
 
-export const payloadApiUrl = "http://localhost:3000/api";
+export const payloadApiUrl =
+  process.env.PAYLOAD_API_URL ?? "http://localhost:3000/api";
 
 export function createPayloadClient(options: Partial<FetchOptions> = {}) {
   const payloadClient = createClient<Config, Locales>({
