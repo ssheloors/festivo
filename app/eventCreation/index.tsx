@@ -20,7 +20,7 @@ import { router } from "expo-router";
 import { useEventCreation } from "@/hooks/use-event-creation";
 import { useUser } from "@/hooks/use-user";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { ArrowRight } from "lucide-react-native";
+import { IconSymbol } from "../../components/ui/IconSymbol";
 
 export default function EventCreation() {
   const form = useForm({
@@ -173,7 +173,7 @@ export default function EventCreation() {
               />
             </View>
             <Button
-              iconAfter={<ArrowRight />}
+              iconAfter={<IconSymbol name="arrow.right" color="white" />}
               backgroundColor={"#282828"}
               color={"white"}
               onPress={onSubmit}
