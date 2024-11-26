@@ -17,6 +17,18 @@ export default function RootLayout() {
               title: "Sign in",
             }}
           />
+          <Stack.Screen
+            name="yourEvents"
+            options={{
+              title: "",
+            }}
+          />
+          <Stack.Screen
+            name="eventCreation"
+            options={{
+              title: "",
+            }}
+          />
         </Stack>
       </QueryClientProvider>
     </TamaguiProvider>

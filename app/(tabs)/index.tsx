@@ -55,6 +55,9 @@ export default function Index() {
       <Link push href="/login" asChild>
         <Button variant="outlined">To login</Button>
       </Link>
+      <Link push href="/yourEvents" asChild>
+        <Button variant="outlined">To events</Button>
+      </Link>
     </YStack>
   );
 }

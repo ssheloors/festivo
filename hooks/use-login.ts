@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 import { useStorage } from "./use-storage";
 
-const athenticationResponseSchema = z.object({
+const authenticationResponseSchema = z.object({
   message: z.string(),
   user: z.custom<PayloadConfig["collections"]["users"]>(),
   token: z.string(),
@@ -27,7 +27,7 @@ export function useLogin() {
         body: JSON.stringify(data),
       });
       const responseData = await req.json();
-      const { token } = athenticationResponseSchema.parse(responseData);
+      const { token } = authenticationResponseSchema.parse(responseData);
 
       await storage.setString("payload-token", token);
 
