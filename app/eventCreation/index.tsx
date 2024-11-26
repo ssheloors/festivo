@@ -87,7 +87,7 @@ export default function EventCreation() {
       <ScrollView>
         <Pressable onPress={Keyboard.dismiss}>
           <YStack padding="$4" gap="$2">
-            <SizableText size="$9" fontSize={32} fontWeight={"bold"}>
+            <SizableText size="$9" fontWeight="bold">
               Create an event
             </SizableText>
             <View>
