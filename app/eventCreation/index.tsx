@@ -149,6 +149,7 @@ export default function EventCreation() {
                 label="Event Description"
                 render={({ field, inputProps }) => (
                   <TextArea
+                    style={{ textAlignVertical: "top" }}
                     placeholder="Event description"
                     height={100}
                     {...inputProps}
