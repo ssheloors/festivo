@@ -5,7 +5,14 @@ import {
   Keyboard,
   Pressable,
 } from "react-native";
-import { Button, YStack, SizableText, TextArea, XStack, ScrollView } from "tamagui";
+import {
+  Button,
+  YStack,
+  SizableText,
+  TextArea,
+  XStack,
+  ScrollView,
+} from "tamagui";
 import React, { useState } from "react";
 import { FormField } from "@/components/FormField";
 import { useForm } from "react-hook-form";
@@ -38,7 +45,11 @@ export default function EventCreation() {
     }
 
     try {
-      await createEvent.mutateAsync({ eventDate: eventDate.toUTCString(), ...data, organizer: user.id });
+      await createEvent.mutateAsync({
+        eventDate: eventDate.toUTCString(),
+        ...data,
+        organizer: user.id,
+      });
       router.push("/yourEvents");
     } catch (error) {
       alert("You are not allowed to perform this action.");
@@ -126,7 +137,10 @@ export default function EventCreation() {
                               minimumDate={new Date()}
                             />
                             <Button
-                              {...inputProps} variant="outlined" onPress={showTimePicker}>
+                              {...inputProps}
+                              variant="outlined"
+                              onPress={showTimePicker}
+                            >
                               {field.value.toLocaleTimeString()}
                             </Button>
                             <DateTimePickerModal
@@ -137,7 +151,7 @@ export default function EventCreation() {
                               minimumDate={new Date()}
                             />
                           </XStack>
-                        )
+                        );
                       }}
                     />
                   </View>
