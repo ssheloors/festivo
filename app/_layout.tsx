@@ -1,6 +1,7 @@
-import { Stack } from "expo-router";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { TamaguiProvider, createTamagui } from "tamagui";
+import { Stack } from "expo-router";
+import { TamaguiProvider } from "tamagui";
+
 import tamaguiConfig from "@/tamagui.config";
 
 const queryClient = new QueryClient();
