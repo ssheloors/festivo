@@ -1,3 +1,6 @@
+import { router } from "expo-router";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import {
   View,
   KeyboardAvoidingView,
@@ -5,6 +8,7 @@ import {
   Keyboard,
   Pressable,
 } from "react-native";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {
   Button,
   YStack,
@@ -13,14 +17,12 @@ import {
   XStack,
   ScrollView,
 } from "tamagui";
-import React, { useState } from "react";
+
+import { IconSymbol } from "../../components/ui/IconSymbol";
+
 import { FormField } from "@/components/FormField";
-import { useForm } from "react-hook-form";
-import { router } from "expo-router";
 import { useEventCreation } from "@/hooks/use-event-creation";
 import { useUser } from "@/hooks/use-user";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { IconSymbol } from "../../components/ui/IconSymbol";
 
 export default function EventCreation() {
   const form = useForm({
@@ -35,8 +37,8 @@ export default function EventCreation() {
   const createEvent = useEventCreation();
   const { data: user, isLoading } = useUser();
 
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false); //for date picker
-  const [isTimePickerVisible, setTimePickerVisibility] = useState(false); //for time picker
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false); // for date picker
+  const [isTimePickerVisible, setTimePickerVisibility] = useState(false); // for time picker
 
   const onSubmit = form.handleSubmit(async ({ eventDate, ...data }) => {
     if (!user) {
@@ -52,7 +54,11 @@ export default function EventCreation() {
       });
       router.push("/yourEvents");
     } catch (error) {
-      alert("You are not allowed to perform this action.");
+      alert(
+        error instanceof Error
+          ? error.message
+          : "You are not allowed to perform this action.",
+      );
     }
   });
 
@@ -115,10 +121,10 @@ export default function EventCreation() {
                       name="eventDate"
                       label="Date & Time"
                       render={({ field, inputProps }) => {
-                        const handleConfirm = (date: any) => {
+                        const handleConfirm = (date: Date) => {
                           hideDatePicker();
                           hideTimePicker();
-                          field.onChange(date); //passing the full UTC date to the form
+                          field.onChange(date); // passing the full UTC date to the form
                         };
                         return (
                           <XStack gap="$4">

@@ -7,6 +7,7 @@ import {
   Path,
   UseFormReturn,
 } from "react-hook-form";
+import { NativeSyntheticEvent, NativeTouchEvent } from "react-native";
 import {
   Input,
   InputProps,
@@ -31,10 +32,10 @@ export function FormField<T extends FieldValues>({
     props: {
       inputProps: {
         id: string;
-        onPress: (e: any) => void;
+        onPress: (e: NativeSyntheticEvent<NativeTouchEvent>) => void;
         opacity: number;
       };
-    } & Parameters<ControllerProps["render"]>[0]
+    } & Parameters<ControllerProps["render"]>[0],
   ) => JSX.Element;
 }) {
   return (

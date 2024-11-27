@@ -12,6 +12,12 @@ import { Media } from './collections/Media'
 import { Events } from './collections/Events'
 import { Attendees } from './collections/Attendees'
 
+import { Config } from './payload-types'
+
+declare module 'payload' {
+  export interface GeneratedTypes extends Config {}
+}
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -27,6 +33,7 @@ export default buildConfig({
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
+    declare: false,
   },
   db: sqliteAdapter({
     client: {

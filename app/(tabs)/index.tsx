@@ -1,8 +1,9 @@
-import { usePayload } from "@/hooks/use-payload";
-import { useUser } from "@/hooks/use-user";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "expo-router";
 import { Button, YStack, Text, Spinner } from "tamagui";
+
+import { usePayload } from "@/hooks/use-payload";
+import { useUser } from "@/hooks/use-user";
 
 export default function Index() {
   const payload = usePayload();
@@ -21,7 +22,7 @@ export default function Index() {
         return;
       }
 
-      const resp = await payload.collections.users.update({
+      await payload.collections.users.update({
         patch: {
           name: "Lena",
         },
@@ -31,7 +32,6 @@ export default function Index() {
           },
         },
       });
-      console.log(resp);
 
       await queryClient.invalidateQueries({
         queryKey: ["user"],

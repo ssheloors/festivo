@@ -1,7 +1,9 @@
-import { createPayloadClient } from "@/utils/payload-client";
-import { useEffect, useRef } from "react";
-import { useStorage } from "./use-storage";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useRef } from "react";
+
+import { useStorage } from "./use-storage";
+
+import { createPayloadClient } from "@/utils/payload-client";
 
 export function usePayload() {
   const payloadRef = useRef(createPayloadClient());
