@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  style={
+    {
+      "alignItems": "stretch",
+      "flexDirection": "column",
+    }
+  }
+>
+  <Text
+    htmlFor="testInput"
+    id=":r0:"
+    onBlur={[Function]}
+    onClick={[Function]}
+    onFocus={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "transparent",
+        "color": "hsl(0, 0%, 9.0%)",
+        "display": "flex",
+        "fontFamily": "Inter",
+        "fontSize": 14,
+        "letterSpacing": 0,
+        "lineHeight": 44,
+        "userSelect": "none",
+      }
+    }
+    suppressHighlighting={true}
+  >
+    Test input
+  </Text>
+  <TextInput
+    focusVisibleStyle={{}}
+    focusable={true}
+    id="testInput"
+    name="testInput"
+    onBlur={[Function]}
+    onChangeText={[Function]}
+    onFocus={[Function]}
+    onPressIn={[Function]}
+    onPressOut={[Function]}
+    placeholderTextColor="hsl(0, 0%, 56.1%)"
+    style={
+      {
+        "backgroundColor": "#f8f8f8",
+        "borderBottomColor": "hsl(0, 0%, 92.0%)",
+        "borderBottomLeftRadius": 9,
+        "borderBottomRightRadius": 9,
+        "borderBottomWidth": 1,
+        "borderLeftColor": "hsl(0, 0%, 92.0%)",
+        "borderLeftWidth": 1,
+        "borderRightColor": "hsl(0, 0%, 92.0%)",
+        "borderRightWidth": 1,
+        "borderStyle": "solid",
+        "borderTopColor": "hsl(0, 0%, 92.0%)",
+        "borderTopLeftRadius": 9,
+        "borderTopRightRadius": 9,
+        "borderTopWidth": 1,
+        "color": "hsl(0, 0%, 9.0%)",
+        "fontFamily": "Inter",
+        "fontSize": 14,
+        "height": 44,
+        "letterSpacing": 0,
+        "minWidth": 0,
+        "opacity": 1,
+        "paddingLeft": 16,
+        "paddingRight": 16,
+      }
+    }
+    value="testInputValue"
+  />
+</View>
+`;
