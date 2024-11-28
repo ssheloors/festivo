@@ -1,82 +1,62 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders correctly 1`] = `
-<View
-  style={
-    {
-      "alignItems": "stretch",
-      "flexDirection": "column",
-    }
-  }
->
-  <Text
-    htmlFor="testInput"
-    id=":r0:"
-    onBlur={[Function]}
-    onClick={[Function]}
-    onFocus={[Function]}
-    onResponderGrant={[Function]}
-    onResponderMove={[Function]}
-    onResponderRelease={[Function]}
-    onResponderTerminate={[Function]}
-    onResponderTerminationRequest={[Function]}
-    onStartShouldSetResponder={[Function]}
-    style={
-      {
-        "alignItems": "center",
-        "backgroundColor": "transparent",
-        "color": "hsl(0, 0%, 9.0%)",
-        "display": "flex",
-        "fontFamily": "Inter",
-        "fontSize": 14,
-        "letterSpacing": 0,
-        "lineHeight": 44,
-        "userSelect": "none",
-      }
-    }
-    suppressHighlighting={true}
+<DocumentFragment>
+  <span
+    class=""
+    style="display: contents;"
   >
-    Test input
-  </Text>
-  <TextInput
-    focusVisibleStyle={{}}
-    focusable={true}
-    id="testInput"
-    name="testInput"
-    onBlur={[Function]}
-    onChangeText={[Function]}
-    onFocus={[Function]}
-    onPressIn={[Function]}
-    onPressOut={[Function]}
-    placeholderTextColor="hsl(0, 0%, 56.1%)"
-    style={
-      {
-        "backgroundColor": "#f8f8f8",
-        "borderBottomColor": "hsl(0, 0%, 92.0%)",
-        "borderBottomLeftRadius": 9,
-        "borderBottomRightRadius": 9,
-        "borderBottomWidth": 1,
-        "borderLeftColor": "hsl(0, 0%, 92.0%)",
-        "borderLeftWidth": 1,
-        "borderRightColor": "hsl(0, 0%, 92.0%)",
-        "borderRightWidth": 1,
-        "borderStyle": "solid",
-        "borderTopColor": "hsl(0, 0%, 92.0%)",
-        "borderTopLeftRadius": 9,
-        "borderTopRightRadius": 9,
-        "borderTopWidth": 1,
-        "color": "hsl(0, 0%, 9.0%)",
-        "fontFamily": "Inter",
-        "fontSize": 14,
-        "height": 44,
-        "letterSpacing": 0,
-        "minWidth": 0,
-        "opacity": 1,
-        "paddingLeft": 16,
-        "paddingRight": 16,
-      }
-    }
-    value="testInputValue"
-  />
-</View>
+    <span
+      class=" _dsp_contents"
+    >
+      <span
+        class=" t_light _dsp_contents is_Theme"
+      >
+        <div
+          class="_dsp-flex _fb-auto _bxs-border-box _pos-relative _mih-0px _miw-0px _fs-0 _fd-column _ai-stretch"
+        >
+          <label
+            class="is_Label font_body _col-0active-colorPress _dsp-flex _bxs-border-box _ww-break-word _whiteSpace-pre-wrap _mt-0px _mr-0px _mb-0px _ml-0px _ff-f-family _fow-f-weight-4 _ls-f-letterSpa1360334202 _fos-f-size-4 _lh-t-size-true _col-color _bg-transparent _ai-center _ussel-none _cur-default"
+            data-disable-theme="true"
+            for="testInput"
+            id=":r0:"
+          >
+            Test input
+          </label>
+          <span
+            class=" _dsp_contents"
+          >
+            <span
+              class="t_sub_theme t_Input _dsp_contents is_Theme"
+            >
+              <span
+                class="_dsp_contents"
+              >
+                <input
+                  aria-labelledby=":r0:"
+                  autocapitalize="sentences"
+                  autocomplete="on"
+                  autocorrect="on"
+                  class="css-textinput-11aywtz r-placeholderTextColor-6taxm2 is_Input font_body _btc-0hover-borderColor69916956 _brc-0hover-borderColor69916956 _bbc-0hover-borderColor69916956 _blc-0hover-borderColor69916956 _btc-0focus-borderColor68052152 _brc-0focus-borderColor68052152 _bbc-0focus-borderColor68052152 _blc-0focus-borderColor68052152 _outlineColor-0focus-visible-outlineColo114 _outlineWidth-0focus-visible-2px _outlineStyle-0focus-visible-solid _ff-f-family _fow-f-weight-4 _ls-f-letterSpa1360334202 _fos-f-size-4 _lh-f-lineHeigh112923 _pr-t-space-3--53 _pl-t-space-3--53 _h-t-size-true _btlr-t-radius-tr3728 _btrr-t-radius-tr3728 _bbrr-t-radius-tr3728 _bblr-t-radius-tr3728 _btw-1px _brw-1px _bbw-1px _blw-1px _outlineWidth-0px _col-color _btc-borderColor _brc-borderColor _bbc-borderColor _blc-borderColor _bg-background _miw-0px _bbs-solid _bts-solid _bls-solid _brs-solid _o-1 test-class"
+                  data-disable-theme="true"
+                  dir="auto"
+                  id="testInput"
+                  rows="1"
+                  spellcheck="true"
+                  style="--placeholderTextColor: var(--placeholderColor);"
+                  tabindex="0"
+                  value="testInputValue"
+                  virtualkeyboardpolicy="auto"
+                />
+              </span>
+            </span>
+          </span>
+        </div>
+        <div
+          style="display: contents;"
+        />
+      </span>
+    </span>
+  </span>
+</DocumentFragment>
 `;

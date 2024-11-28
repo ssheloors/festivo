@@ -4,10 +4,10 @@ import {
   UseFormProps,
   UseFormReturn,
 } from "react-hook-form";
-import renderer from "react-test-renderer";
 
 import { FormField } from "./FormField";
-import { TestProvider } from "./TestProvider";
+
+import { render } from "@/test-utils";
 
 function FormWrapper<T extends FieldValues>({
   defaultValues,
@@ -22,22 +22,18 @@ function FormWrapper<T extends FieldValues>({
 }
 
 it(`renders correctly`, () => {
-  const tree = renderer
-    .create(
-      <TestProvider>
-        <FormWrapper defaultValues={{ testInput: "testInputValue" }}>
-          {(form) => (
-            <FormField
-              form={form}
-              label="Test input"
-              name="testInput"
-              inputProps={{ className: "test-class" }}
-            />
-          )}
-        </FormWrapper>
-      </TestProvider>,
-    )
-    .toJSON();
+  const { asFragment } = render(
+    <FormWrapper defaultValues={{ testInput: "testInputValue" }}>
+      {(form) => (
+        <FormField
+          form={form}
+          label="Test input"
+          name="testInput"
+          inputProps={{ className: "test-class" }}
+        />
+      )}
+    </FormWrapper>,
+  );
 
-  expect(tree).toMatchSnapshot();
+  expect(asFragment()).toMatchSnapshot();
 });
