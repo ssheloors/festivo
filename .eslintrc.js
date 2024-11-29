@@ -41,13 +41,7 @@ module.exports = {
         ],
       },
     ],
-    "react-hooks/exhaustive-deps": [
-      "error",
-      {
-        additionalHooks:
-          "(useSupabaseQuery|useSupabaseRealtime|useSupabaseDbChanges)",
-      },
-    ],
+    "react-hooks/exhaustive-deps": ["error"],
     "@typescript-eslint/no-unused-vars": [
       "error",
       { argsIgnorePattern: "^_", destructuredArrayIgnorePattern: "^_" },
