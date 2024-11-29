@@ -8,24 +8,28 @@
 //   - Event code
 //   - Event date and time
 //   - Event location
-//   - Event organizer (the current user)
+//   - Event organizer
 //   - Event description
 //   - Event attendees
 //   - Event edit button (if the current user is the organizer, skip if not)
 // 7. Tap on the "Edit" button to edit the event details (will be implemented in a future step)
 
 import { useNavigation } from "@react-navigation/native";
-import { useQuery } from "@tanstack/react-query";
 import { Button, ScrollView, SizableText } from "tamagui";
 import { View } from "react-native";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { useEventById } from "@/hooks/use-event";
+import { useUser } from "@/hooks/use-user";
 
-export default function EventPage({ eventId }: { eventId: string }) {
-  eventId = "2";
-  const { data: event } = useEventById(eventId);
+export default function EventPage({ eventId }: { eventId: number }) {
+  eventId = 5; // Replace with actual eventId
+  const { data: events } = useEventById(eventId);
+  const event = events?.docs[0];
+  const { data: user } = useUser();
   const navigation = useNavigation();
   console.log(event);
+  console.log(event?.organizer);
+  // console.log(event.organizer.id);
 
   if (!event) {
     return null;
@@ -55,22 +59,25 @@ export default function EventPage({ eventId }: { eventId: string }) {
           <IconSymbol name="mappin.and.ellipse" size={24} color="#000" />
           {event.address}
         </SizableText>
-        <SizableText size="$4">
-          Organizer:
-          <IconSymbol name="person.fill" size={24} color="#000" />
-          {event.organizer.name}
-        </SizableText>
-        <SizableText size="$4">{event.description}</SizableText>
-      </View>
-      {/* <Button
-        iconAfter={
-          <IconSymbol name="square.and.pencil" size={24} color="black" />
+        { typeof event.organizer != 'number' &&
+          <SizableText size="$4">
+            Organizer:
+            <IconSymbol name="person.fill" size={24} color="#000" />
+            {event.organizer.name}
+          </SizableText>
         }
-        onPress={() => navigation.navigate("EventEdit", { eventId: event.id })}
-        style={{ margin: 16 }}
-      >
-        <SizableText size="$4">Edit Event</SizableText>
-      </Button> */}
+        <SizableText size="$4">{event.description}</SizableText>
+        {/* {user?.id === event.organizer.id && (
+          <Button
+            iconAfter={
+              <IconSymbol name="square.and.pencil" size={24} color="black" />
+            }
+            // onPress={() => navigation.navigate("EventEdit", { eventId: event.id })}
+          >
+            <SizableText size="$4">Edit Event</SizableText>
+          </Button>
+        )} */}
+      </View>
     </ScrollView>
   );
 }
