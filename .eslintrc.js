@@ -5,6 +5,7 @@ module.exports = {
     "expo",
     "plugin:@typescript-eslint/strict",
     "plugin:@typescript-eslint/stylistic",
+    "plugin:testing-library/react",
   ],
   ignorePatterns: ["/dist/*", "festivo-backend/", "app-example/"],
   rules: {

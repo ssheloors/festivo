@@ -2,3 +2,4 @@
 **/.next
 .app-example
 node_modules
+**/payload-types.ts
