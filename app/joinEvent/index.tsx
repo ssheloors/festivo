@@ -1,14 +1,17 @@
 import { usePayload } from "@/hooks/use-payload";
 import React from "react";
-import { KeyboardAvoidingView, Platform, View } from "react-native";
-import { SizableText, YStack, Button, Text, XStack } from "tamagui";
+import { KeyboardAvoidingView, Platform } from "react-native";
+import { SizableText, YStack, Button } from "tamagui";
 import { FormField } from "@/components/FormField";
 import { useForm } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "expo-router";
 
 export default function EventCreation() {
   const form = useForm({
     defaultValues: {
+      name: "",
+      email: "",
       code: "",
     },
   });
@@ -28,13 +31,34 @@ export default function EventCreation() {
     enabled: false,
   });
 
+  const router = useRouter();
+
   const onSubmit = form.handleSubmit(() => {
     if (form.getValues("code")) {
-      refetch();
+      refetch().then((response) => {
+        if (response.data?.docs.length === 0) {
+          alert("Event not found");
+        } else {
+          router.push("./joinEvent/attendeeDetails");
+        }
+      });
     } else {
       alert("Please input the code");
     }
   });
+
+  //Move to attendeeDetails
+  // const joinEvent = () => {
+  //   if (!data?.docs[0]) {
+  //     alert("Event not found");
+  //     return;
+  //   }
+  //   addAttendee.mutate({
+  //     eventId: data.docs[0].eventCode,
+  //     name: form.getValues("name"),
+  //     email: form.getValues("email"),
+  //   });
+  // };
 
   console.log(data?.docs[0]);
 
@@ -57,18 +81,6 @@ export default function EventCreation() {
           }}
         />
         <Button onPress={onSubmit}>Join</Button>
-        {data?.docs[0] ? (
-          <XStack marginTop="$14">
-            <YStack>
-              <Text>Event title</Text>
-              <Text>Event address</Text>
-            </YStack>
-            <YStack>
-              <Text>{data.docs[0].title}</Text>
-              <Text>{data.docs[0].address}</Text>
-            </YStack>
-          </XStack>
-        ) : null}
       </YStack>
     </KeyboardAvoidingView>
   );
