@@ -1,20 +1,4 @@
-// 1. Login to the app
-// 2. Tap on the "Host" tab (not done yet, will be implemented in a future step)
-// 3. Tap on the "Create a new event" button (not done yet, will be implemented in a future step)
-// 4. Fill out the form and tap on the "Create Event" button
-// 5. The event will generate a random eventCode
-// 6. Tap on the event in "Your Events" to view the event details:
-//   - Event name
-//   - Event code
-//   - Event date and time
-//   - Event location
-//   - Event organizer
-//   - Event description
-//   - Event attendees
-//   - Event edit button (if the current user is the organizer, skip if not)
-// 7. Tap on the "Edit" button to edit the event details (will be implemented in a future step)
-
-import { useNavigation } from "@react-navigation/native";
+// import { useNavigation } from "@react-navigation/native";
 import { Button, ScrollView, SizableText, Text, XStack, YStack } from "tamagui";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { useEventById } from "@/hooks/use-event";
@@ -25,8 +9,7 @@ export default function EventPage() {
   const { id } = useLocalSearchParams();
   const { data: event } = useEventById(Number(id));
   const { data: user } = useUser();
-  const navigation = useNavigation();
-  console.log(event);
+  // const navigation = useNavigation();
 
   if (!event) {
     return <Text>Loading...</Text>;
