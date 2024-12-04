@@ -1,5 +1,6 @@
-import { usePayload } from "./use-payload";
 import { useQuery } from "@tanstack/react-query";
+
+import { usePayload } from "./use-payload";
 
 export function useEventById(eventId: number) {
   const payload = usePayload();

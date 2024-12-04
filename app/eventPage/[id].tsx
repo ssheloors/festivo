@@ -1,9 +1,10 @@
-// import { useNavigation } from "@react-navigation/native";
+import { useLocalSearchParams } from "expo-router";
+import React from "react";
 import { Button, ScrollView, SizableText, Text, XStack, YStack } from "tamagui";
+
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { useEventById } from "@/hooks/use-event";
 import { useUser } from "@/hooks/use-user";
-import { useLocalSearchParams } from "expo-router";
 
 export default function EventPage() {
   const { id } = useLocalSearchParams();
