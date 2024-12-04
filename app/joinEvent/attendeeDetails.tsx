@@ -1,18 +1,12 @@
-import React from "react";
-import {
-  Button,
-  SizableText,
-  TextArea,
-  YStack,
-  Separator,
-  useTheme,
-} from "tamagui";
-import { KeyboardAvoidingView, Platform } from "react-native";
-import { FormField } from "@/components/FormField";
-import { useForm } from "react-hook-form";
 import { useLocalSearchParams } from "expo-router";
-import { useAddAttendeeToEvent } from "@/hooks/use-add-attendee-to-event";
 import { useRouter } from "expo-router";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { KeyboardAvoidingView, Platform } from "react-native";
+import { Button, SizableText, TextArea, YStack } from "tamagui";
+
+import { FormField } from "@/components/FormField";
+import { useAddAttendeeToEvent } from "@/hooks/use-add-attendee-to-event";
 
 export default function AttendeeDetails() {
   const { code } = useLocalSearchParams() as { code: string };

@@ -1,30 +1,21 @@
-import { usePayload } from "@/hooks/use-payload";
-import React, { useState } from "react";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  Text,
-  StyleSheet,
-  View,
-  Pressable,
-  Keyboard,
-} from "react-native";
-import { SizableText, YStack, Button, ScrollView } from "tamagui";
-import { FormField } from "@/components/FormField";
-import { useForm } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { KeyboardAvoidingView, Platform, Text, StyleSheet } from "react-native";
 import {
   CodeField,
   Cursor,
   useBlurOnFulfill,
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
+import { SizableText, YStack, Button, ScrollView } from "tamagui";
+
+import { usePayload } from "@/hooks/use-payload";
 
 export default function EventCreation() {
   const payload = usePayload();
 
-  const { data, refetch } = useQuery({
+  const { refetch } = useQuery({
     queryKey: ["events"],
     queryFn: () =>
       payload.collections.event.find({
@@ -40,7 +31,7 @@ export default function EventCreation() {
   const router = useRouter();
 
   const onSubmit = () => {
-    if (value != "") {
+    if (value !== "") {
       refetch().then((response) => {
         if (response.data?.docs.length === 0) {
           alert("Event not found");
@@ -56,7 +47,7 @@ export default function EventCreation() {
     }
   };
 
-  //for the separated input field
+  // for the separated input field
   const CELL_COUNT = 6;
   const [value, setValue] = useState("");
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
@@ -66,7 +57,7 @@ export default function EventCreation() {
   });
 
   const styles = StyleSheet.create({
-    //color handling might change later with the theme so i am not touching it
+    // color handling might change later with the theme so i am not touching it
     cell: {
       width: 44,
       height: 44,
