@@ -7,7 +7,12 @@ module.exports = {
     "plugin:@typescript-eslint/stylistic",
     "plugin:testing-library/react",
   ],
-  ignorePatterns: ["/dist/*", "festivo-backend/", "app-example/"],
+  ignorePatterns: [
+    "/dist/*",
+    "festivo-backend/",
+    "app-example/",
+    "theme-output.ts",
+  ],
   rules: {
     "no-template-curly-in-string": "error",
     "no-promise-executor-return": "error",

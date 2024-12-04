@@ -12,7 +12,8 @@
     "lint": "npm run lint:eslint && npm run lint:ts && npm run lint:prettier",
     "lint:eslint": "eslint .",
     "lint:prettier": "prettier --check .",
-    "lint:ts": "tsc --noEmit"
+    "lint:ts": "tsc --noEmit",
+    "generate-themes": "tamagui generate-themes ./theme-builder.ts ./theme-output.ts"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.4",
@@ -21,6 +22,7 @@
     "@react-native-community/datetimepicker": "8.2.0",
     "@react-navigation/bottom-tabs": "^7.0.13",
     "@react-navigation/native": "^7.0.8",
+    "@tamagui/cli": "^1.118.1",
     "@tamagui/config": "^1.117.2",
     "@tanstack/react-query": "^5.61.5",
     "expo": "~52.0.11",
@@ -33,7 +35,7 @@
     "expo-splash-screen": "~0.29.13",
     "expo-status-bar": "~2.0.0",
     "expo-symbols": "~0.2.0",
-    "expo-system-ui": "~4.0.4",
+    "expo-system-ui": "~4.0.5",
     "expo-web-browser": "~14.0.1",
     "festivo": "file:",
     "payload-rest-client": "^0.1.4",
