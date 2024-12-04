@@ -10,8 +10,6 @@ import { useRouter } from "expo-router";
 export default function EventCreation() {
   const form = useForm({
     defaultValues: {
-      name: "",
-      email: "",
       code: "",
     },
   });
@@ -39,7 +37,10 @@ export default function EventCreation() {
         if (response.data?.docs.length === 0) {
           alert("Event not found");
         } else {
-          router.push("./joinEvent/attendeeDetails");
+          router.push({
+            pathname: "/joinEvent/attendeeDetails",
+            params: {code: form.getValues("code")}
+          })
         }
       });
     } else {
@@ -47,18 +48,7 @@ export default function EventCreation() {
     }
   });
 
-  //Move to attendeeDetails
-  // const joinEvent = () => {
-  //   if (!data?.docs[0]) {
-  //     alert("Event not found");
-  //     return;
-  //   }
-  //   addAttendee.mutate({
-  //     eventId: data.docs[0].eventCode,
-  //     name: form.getValues("name"),
-  //     email: form.getValues("email"),
-  //   });
-  // };
+
 
   console.log(data?.docs[0]);
 

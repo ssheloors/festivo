@@ -17,5 +17,15 @@ export const Attendees: CollectionConfig = {
       type: 'email',
       required: true,
     },
+    {
+      name: 'comments',
+      type: 'textarea',
+    },
+    {
+      name: 'event',
+      type: 'relationship',
+      relationTo: 'event',
+      required: true,   
+    },
   ],
 }

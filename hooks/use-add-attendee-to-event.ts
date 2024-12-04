@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { usePayload } from "./use-payload";
 import { useQueryClient } from "@tanstack/react-query";
 
-export function useAddAttendeeToEvent() {
+export function useAddAttendeeToEvent(code: string) {
   const payload = usePayload();
   const queryClient = useQueryClient();
 
@@ -12,11 +12,22 @@ export function useAddAttendeeToEvent() {
       eventId: string;
       name: string;
       email: string;
+      comments: string;
     }) => {
+      const event = await payload.collections.event.find({
+        //find the event first to be able to reference its id when creating the attendee
+        where: {
+          eventCode: {
+            equals: code,
+          },
+        },
+      });
       const attendee = await payload.collections.attendee.create({
         doc: {
           name: data.name,
           email: data.email,
+          comments: data.comments,
+          event: event.docs[0].id,
         },
       });
       await payload.collections.event.update({
