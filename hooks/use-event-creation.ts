@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import { usePayload } from "./use-payload";
 
 export function useEventCreation() {
@@ -20,6 +21,7 @@ export function useEventCreation() {
           description: formData.description,
           eventDate: formData.eventDate,
           organizer: formData.organizer,
+          eventCode: "", // Is generated server-side
         },
       });
     },

@@ -3,14 +3,14 @@ import React from "react";
 import { Platform } from "react-native";
 
 import { IconSymbol } from "@/components/ui/IconSymbol";
-import TabBarBackground from "@/components/ui/TabBarBackground";
+import { BlurTabBarBackground } from "@/components/ui/TabBarBackground";
 
 export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarBackground: TabBarBackground,
+        tabBarBackground: BlurTabBarBackground,
         tabBarStyle: Platform.select({
           ios: {
             // Use a transparent background on iOS to show the blur effect

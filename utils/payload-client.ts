@@ -1,6 +1,7 @@
 import { createClient } from "payload-rest-client";
-import { Config } from "../festivo-backend/src/payload-types"; // auto generated types from payload
 import { FetchOptions } from "payload-rest-client/dist/types";
+
+import { Config } from "../festivo-backend/src/payload-types"; // auto generated types from payload
 
 type Locales = "en";
 
