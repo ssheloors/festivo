@@ -1,5 +1,8 @@
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { router } from "expo-router";
+import { useForm } from "react-hook-form";
+import { KeyboardAvoidingView, Platform } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
   Button,
   getTokens,
@@ -9,12 +12,10 @@ import {
   YStack,
 } from "tamagui";
 import { z } from "zod";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { KeyboardAvoidingView, Platform } from "react-native";
+
 import { ErrorMessage, FormField } from "@/components/FormField";
 import { useCreateUser } from "@/hooks/use-create-user";
 import { useLogin } from "@/hooks/use-login";
-import { router } from "expo-router";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),

@@ -1,8 +1,9 @@
-import { usePayload } from "@/hooks/use-payload";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "expo-router";
 import { View, Text } from "react-native";
 import { Button, SizableText } from "tamagui";
-import { Link } from "expo-router";
+
+import { usePayload } from "@/hooks/use-payload";
 
 export default function Events() {
   const payload = usePayload();

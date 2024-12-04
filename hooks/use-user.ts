@@ -1,7 +1,9 @@
-import { payloadApiUrl, PayloadConfig } from "@/utils/payload-client";
 import { useQuery } from "@tanstack/react-query";
-import { useStorage } from "./use-storage";
 import { z } from "zod";
+
+import { useStorage } from "./use-storage";
+
+import { payloadApiUrl, PayloadConfig } from "@/utils/payload-client";
 
 const meResponseSchema = z.object({
   message: z.string(),

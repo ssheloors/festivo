@@ -1,4 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
+
 import { usePayload } from "./use-payload";
 
 export function useCreateUser() {
@@ -15,7 +16,7 @@ export function useCreateUser() {
           email: formData.email,
           name: formData.name,
           password: formData.password,
-        } as any,
+        },
       });
     },
   });
