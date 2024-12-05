@@ -25,7 +25,7 @@ export const Attendees: CollectionConfig = {
       name: 'event',
       type: 'relationship',
       relationTo: 'event',
-      required: true,   
+      required: true,
     },
   ],
 }
