@@ -32,11 +32,11 @@ export function useAddAttendeeToEvent(code: string) {
         },
       });
       await payload.collections.event.update({
+        patch: {
+          attendees: [attendee.doc.id],
+        },
         where: {
           eventCode: { equals: data.eventId },
-        },
-        doc: {
-          attendees: attendee.doc.id,
         },
       });
     },
