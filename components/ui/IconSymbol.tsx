@@ -17,7 +17,7 @@ const MAPPING = {
   "arrow.right": "arrow-forward",
   "person.2.fill": "people",
   "person.fill": "person",
-  "calendar" : "calendar-month",
+  calendar: "calendar-month",
   "mappin.and.ellipse": "location-pin",
   "square.and.pencil": "edit-square",
 } as Partial<
