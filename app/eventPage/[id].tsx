@@ -8,8 +8,9 @@ import { useUser } from "@/hooks/use-user";
 
 export default function EventPage() {
   const { id } = useLocalSearchParams();
-  const { data: event } = useEventById(Number(id));
+  const { data: events } = useEventById(Number(id));
   const { data: user } = useUser();
+  const event = events?.docs[0];
   // const navigation = useNavigation();
 
   if (!event) {
@@ -29,8 +30,8 @@ export default function EventPage() {
   return (
     <ScrollView>
       <YStack padding="$4" gap="$3">
-        <SizableText size="$10">{event.docs[0].title}</SizableText>
-        <SizableText size="$4">{event.docs[0].eventCode}</SizableText>
+        <SizableText size="$10">{event.title}</SizableText>
+        <SizableText size="$4">{event.eventCode}</SizableText>
         <SizableText size="$4">
           <XStack gap="$2">
             <IconSymbol name="calendar" size={24} color="#000" />
@@ -40,26 +41,26 @@ export default function EventPage() {
         <SizableText size="$4">
           <XStack gap="$2">
             <IconSymbol name="mappin.and.ellipse" size={24} color="#000" />
-            <Text>{event.docs[0].address}</Text>
+            <Text>{event.address}</Text>
           </XStack>
         </SizableText>
-        {typeof event.docs[0].organizer !== "number" && (
+        {typeof event.organizer !== "number" && (
           <>
             <SizableText size="$8">Organizer:</SizableText>
             <SizableText>
               <XStack gap="$2">
                 <IconSymbol name="person.fill" size={24} color="#000" />
-                <Text>{event.docs[0].organizer.name}</Text>
+                <Text>{event.organizer.name}</Text>
               </XStack>
             </SizableText>
           </>
         )}
         <SizableText size="$8">Details:</SizableText>
-        <SizableText size="$4">{event.docs[0].description}</SizableText>
-        {event.docs[0].attendees && event.docs[0].attendees.length > 0 && (
+        <SizableText size="$4">{event.description}</SizableText>
+        {event.attendees && event.attendees.length > 0 && (
           <>
             <SizableText size="$8">Attendees:</SizableText>
-            {event.docs[0].attendees.map(
+            {event.attendees.map(
               (attendee) =>
                 typeof attendee !== "number" && (
                   <SizableText key={attendee.id}>{attendee.name}</SizableText>
@@ -67,8 +68,8 @@ export default function EventPage() {
             )}
           </>
         )}
-        {typeof event.docs[0].organizer !== "number" &&
-          user?.id === event.docs[0].organizer.id && (
+        {typeof event.organizer !== "number" &&
+          user?.id === event.organizer.id && (
             <Button
               iconAfter={
                 <IconSymbol name="square.and.pencil" size={24} color="white" />
