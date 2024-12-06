@@ -17,7 +17,17 @@ export default function Events() {
       <SizableText size="$10">Your events</SizableText>
       {isPending && <Text>Loading..</Text>}
       {data &&
-        data.docs.map((event) => <Button key={event.id}>{event.title}</Button>)}
+        data.docs.map((event) => (
+          <Link
+            key={event.id}
+            href={{
+              pathname: "/eventPage/[id]",
+              params: { id: event.id },
+            }}
+          >
+            <Text>{event.title}</Text>
+          </Link>
+        ))}
       <Link href="./eventCreation" asChild>
         <Button>Add event</Button>
       </Link>
