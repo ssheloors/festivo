@@ -122,6 +122,8 @@ export interface Attendee {
   id: number;
   name: string;
   email: string;
+  comments?: string | null;
+  event: number | Event;
   updatedAt: string;
   createdAt: string;
 }
@@ -246,6 +248,8 @@ export interface EventSelect<T extends boolean = true> {
 export interface AttendeeSelect<T extends boolean = true> {
   name?: T;
   email?: T;
+  comments?: T;
+  event?: T;
   updatedAt?: T;
   createdAt?: T;
 }

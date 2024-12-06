@@ -31,6 +31,12 @@ export default function RootLayout() {
             }}
           />
           <Stack.Screen
+            name="joinEvent"
+            options={{
+              title: "",
+            }}
+          />
+          <Stack.Screen
             name="eventPage"
             options={{
               title: "",
