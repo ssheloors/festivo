@@ -39,7 +39,7 @@ export function FormField<T extends FieldValues>({
   ) => JSX.Element;
 }) {
   return (
-    <YStack alignItems="stretch">
+    <YStack alignItems="stretch" width="100%">
       <Label htmlFor={name}>{label}</Label>
       <Controller
         control={form.control}

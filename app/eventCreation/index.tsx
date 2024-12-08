@@ -9,17 +9,12 @@ import {
   Pressable,
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import {
-  Button,
-  YStack,
-  SizableText,
-  TextArea,
-  XStack,
-  ScrollView,
-} from "tamagui";
+import { YStack, SizableText, TextArea, XStack, ScrollView } from "tamagui";
 
 import { IconSymbol } from "../../components/ui/IconSymbol";
 
+import { Button } from "@/components/Button";
+import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { FormField } from "@/components/FormField";
 import { useEventCreation } from "@/hooks/use-event-creation";
 import { useUser } from "@/hooks/use-user";
@@ -113,56 +108,55 @@ export default function EventCreation() {
                   placeholder: "eg. Kungsportsplatsen 1",
                 }}
               />
-              <View>
-                <View style={{ display: "flex", flexDirection: "row" }}>
-                  <View style={{ marginRight: 30 }}>
-                    <FormField
-                      form={form}
-                      name="eventDate"
-                      label="Date & Time"
-                      render={({ field, inputProps }) => {
-                        const handleConfirm = (date: Date) => {
-                          hideDatePicker();
-                          hideTimePicker();
-                          field.onChange(date); // passing the full UTC date to the form
-                        };
-                        return (
-                          <XStack gap="$4">
-                            <Button
-                              {...inputProps}
-                              variant="outlined"
-                              onPress={showDatePicker}
-                            >
-                              {field.value.toDateString()}
-                            </Button>
-                            <DateTimePickerModal
-                              isVisible={isDatePickerVisible}
-                              mode="date"
-                              onConfirm={handleConfirm}
-                              onCancel={hideDatePicker}
-                              minimumDate={new Date()}
-                            />
-                            <Button
-                              {...inputProps}
-                              variant="outlined"
-                              onPress={showTimePicker}
-                            >
-                              {field.value.toLocaleTimeString()}
-                            </Button>
-                            <DateTimePickerModal
-                              isVisible={isTimePickerVisible}
-                              mode="time"
-                              onConfirm={handleConfirm}
-                              onCancel={hideTimePicker}
-                              minimumDate={new Date()}
-                            />
-                          </XStack>
-                        );
-                      }}
-                    />
-                  </View>
-                </View>
-              </View>
+              <FormField
+                form={form}
+                name="eventDate"
+                label="Date & Time"
+                render={({ field, inputProps }) => {
+                  const handleConfirm = (date: Date) => {
+                    hideDatePicker();
+                    hideTimePicker();
+                    field.onChange(date); // passing the full UTC date to the form
+                  };
+                  return (
+                    <XStack gap="$4" width="100%">
+                      <Button
+                        {...inputProps}
+                        onPress={showDatePicker}
+                        flex={1}
+                        variant="input"
+                      >
+                        {field.value.toDateString()}
+                      </Button>
+                      <DateTimePickerModal
+                        isVisible={isDatePickerVisible}
+                        mode="date"
+                        onConfirm={handleConfirm}
+                        onCancel={hideDatePicker}
+                        minimumDate={new Date()}
+                      />
+                      <Button
+                        {...inputProps}
+                        onPress={showTimePicker}
+                        minWidth="$11"
+                        variant="input"
+                      >
+                        {field.value.toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </Button>
+                      <DateTimePickerModal
+                        isVisible={isTimePickerVisible}
+                        mode="time"
+                        onConfirm={handleConfirm}
+                        onCancel={hideTimePicker}
+                        minimumDate={new Date()}
+                      />
+                    </XStack>
+                  );
+                }}
+              />
               <FormField
                 form={form}
                 name="description"
@@ -178,17 +172,15 @@ export default function EventCreation() {
                 )}
               />
             </View>
-            <Button
-              iconAfter={<IconSymbol name="arrow.right" color="white" />}
-              backgroundColor="#282828"
-              color="white"
-              onPress={onSubmit}
-            >
-              Create event
-            </Button>
           </YStack>
         </Pressable>
       </ScrollView>
+      <FloatingActionButton
+        iconAfter={<IconSymbol name="arrow.right" color="$color12" />}
+        onPress={onSubmit}
+      >
+        Create event
+      </FloatingActionButton>
     </KeyboardAvoidingView>
   );
 }

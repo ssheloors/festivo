@@ -13,6 +13,7 @@ import {
 } from "tamagui";
 import { z } from "zod";
 
+import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { ErrorMessage, FormField } from "@/components/FormField";
 import { useCreateUser } from "@/hooks/use-create-user";
 import { useLogin } from "@/hooks/use-login";
@@ -42,6 +43,7 @@ export default function Register() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
     >
       <ScrollView>
         <YStack
@@ -88,17 +90,16 @@ export default function Register() {
             />
           </YStack>
 
-          <Button
-            variant="outlined"
-            onPress={onSubmit}
-            icon={form.formState.isSubmitting ? <Spinner /> : null}
-          >
-            Sign up
-          </Button>
-
           <ErrorMessage error={createUser.error ?? login.error} />
         </YStack>
       </ScrollView>
+
+      <FloatingActionButton
+        onPress={onSubmit}
+        icon={form.formState.isSubmitting ? <Spinner /> : null}
+      >
+        Sign up
+      </FloatingActionButton>
     </KeyboardAvoidingView>
   );
 }
