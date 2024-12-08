@@ -4,6 +4,7 @@ export const Users: CollectionConfig = {
   slug: 'users',
   access: {
     create: () => true,
+    read: () => true,
     update: (args) => args.req.user?.id === args.id,
   },
   admin: {
