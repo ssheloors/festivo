@@ -8,10 +8,25 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
-import { SizableText, YStack, ScrollView, Input, XStack } from "tamagui";
+import { SizableText, YStack, ScrollView, XStack, styled, Text } from "tamagui";
 
 import { Button } from "@/components/Button";
 import { usePayload } from "@/hooks/use-payload";
+
+const Cell = styled(Text, {
+  borderWidth: 1,
+  borderColor: "$color5",
+  backgroundColor: "$color2",
+  color: "$color9",
+  justifyContent: "flex-start",
+  aspectRatio: 1,
+  textAlign: "center",
+  fontWeight: "bold",
+  fontSize: "$6",
+  height: 44,
+  lineHeight: 42,
+  borderRadius: "$radius.true",
+});
 
 export default function EventCreation() {
   const payload = usePayload();
@@ -75,22 +90,15 @@ export default function EventCreation() {
             ref={ref}
             {...props}
             value={value}
-            onChangeText={setValue}
+            onChangeText={(v) => setValue(v.toUpperCase())}
             cellCount={CELL_COUNT}
             keyboardType="default"
             textContentType="oneTimeCode"
             rootStyle={{ gap: 10, justifyContent: "center" }}
             renderCell={({ index, symbol, isFocused }) => (
-              <Input
-                key={index}
-                onLayout={getCellOnLayoutHandler(index)}
-                aspectRatio={1}
-                textAlign="center"
-                fontWeight="bold"
-                fontSize="$6"
-              >
+              <Cell key={index} onLayout={getCellOnLayoutHandler(index)}>
                 {symbol || (isFocused ? <Cursor /> : null)}
-              </Input>
+              </Cell>
             )}
           />
           <XStack justifyContent="center">
