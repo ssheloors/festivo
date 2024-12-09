@@ -20,6 +20,7 @@ const MAPPING = {
   calendar: "calendar-month",
   "mappin.and.ellipse": "location-pin",
   "square.and.pencil": "edit-square",
+  cross: "close",
 } as Partial<
   Record<
     import("expo-symbols").SymbolViewProps["name"],

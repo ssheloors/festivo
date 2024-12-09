@@ -10,6 +10,7 @@ import { useAddAttendeeToEvent } from "@/hooks/use-add-attendee-to-event";
 
 export default function AttendeeDetails() {
   const { code } = useLocalSearchParams() as { code: string };
+  const { id } = useLocalSearchParams() as { id: string };
   const router = useRouter();
   const addAttendeeMutation = useAddAttendeeToEvent(code);
 
@@ -21,17 +22,18 @@ export default function AttendeeDetails() {
       code: code,
     },
   });
-  const onSubmit = form.handleSubmit(() => {
+  const onSubmit = form.handleSubmit(async () => {
     try {
-      addAttendeeMutation.mutate({
+      await addAttendeeMutation.mutate({
         eventId: code,
         name: form.getValues("name"),
         email: form.getValues("email"),
         comments: form.getValues("comments"),
       });
-      router.push({
-        pathname: "/joinEvent/success",
-        params: { code: code },
+      localStorage.setItem(code, "joined");
+      router.replace({
+        pathname: "/eventPage/[id]",
+        params: { id: id },
       });
     } catch (error) {
       alert("Error adding you to the event" + error);

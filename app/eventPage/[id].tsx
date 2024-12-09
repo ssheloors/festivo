@@ -1,5 +1,5 @@
-import { useLocalSearchParams } from "expo-router";
-import React from "react";
+import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
+import React, { useCallback, useState } from "react";
 import { Button, ScrollView, SizableText, Text, XStack, YStack } from "tamagui";
 
 import { IconSymbol } from "@/components/ui/IconSymbol";
@@ -11,11 +11,14 @@ export default function EventPage() {
   const { data: events } = useEventById(Number(id));
   const { data: user } = useUser();
   const event = events?.docs[0];
-  // const navigation = useNavigation();
+
+  const router = useRouter();
 
   if (!event) {
     return <Text>Loading...</Text>;
   }
+
+  const joinStatus = localStorage.getItem(event.eventCode);
 
   const formattedDate = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
@@ -30,7 +33,19 @@ export default function EventPage() {
   return (
     <ScrollView>
       <YStack padding="$4" gap="$3">
-        <SizableText size="$10">{event.title}</SizableText>
+        <XStack>
+          <SizableText size="$10">{event.title}</SizableText>
+          {joinStatus === "joined" && (
+            <SizableText
+              size="$4"
+              alignContent="center"
+              marginLeft="$6"
+              color="green" // TODO: Improve styling of this text
+            >
+              Registered!
+            </SizableText>
+          )}
+        </XStack>
         <SizableText size="$4">{event.eventCode}</SizableText>
         <SizableText size="$4">
           <XStack gap="$2">
@@ -64,7 +79,7 @@ export default function EventPage() {
               (attendee) =>
                 typeof attendee !== "number" && (
                   <SizableText key={attendee.id}>{attendee.name}</SizableText>
-                ),
+                )
             )}
           </>
         )}
@@ -79,6 +94,40 @@ export default function EventPage() {
               color="white"
             >
               Edit Event
+            </Button>
+          )}
+        {joinStatus !== "joined" &&
+          typeof event.organizer !== "number" &&
+          user?.id !== event.organizer.id && (
+            <Button
+              iconAfter={
+                <IconSymbol name="arrow.right" size={24} color="white" />
+              }
+              onPress={() =>
+                router.push({
+                  pathname: "/joinEvent/attendeeDetails",
+                  params: { code: event.eventCode, id: event.id },
+                })
+              }
+              backgroundColor="#282828"
+              color="white"
+            >
+              Join event
+            </Button>
+          )}
+        {joinStatus === "joined" &&
+          typeof event.organizer !== "number" &&
+          user?.id !== event.organizer.id && (
+            <Button
+              iconAfter={<IconSymbol name="cross" size={24} color="white" />}
+              // TODO: implement cancel attendance
+              // onPress={() => {
+              //   })
+              // }
+              backgroundColor="#282828"
+              color="white"
+            >
+              Cancel attendance
             </Button>
           )}
       </YStack>
