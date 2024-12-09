@@ -1,5 +1,5 @@
-import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
-import React, { useCallback, useState } from "react";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import React from "react";
 import { Button, ScrollView, SizableText, Text, XStack, YStack } from "tamagui";
 
 import { IconSymbol } from "@/components/ui/IconSymbol";
