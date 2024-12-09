@@ -54,7 +54,11 @@ export function IconSymbol({
       color={useHexColor(color)}
       size={size}
       name={MAPPING[name]}
-      style={style}
+      // This is to make sure that this version of IconSymbol takes in the
+      // same props as the iOS version (which in this case is considered the
+      // reference)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      style={style as any}
     />
   );
 }

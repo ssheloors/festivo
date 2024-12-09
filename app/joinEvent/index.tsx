@@ -1,15 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { KeyboardAvoidingView, Platform, Text, StyleSheet } from "react-native";
+import { KeyboardAvoidingView, Platform } from "react-native";
 import {
   CodeField,
   Cursor,
   useBlurOnFulfill,
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
-import { SizableText, YStack, Button, ScrollView } from "tamagui";
+import { SizableText, YStack, ScrollView, Input, XStack } from "tamagui";
 
+import { Button } from "@/components/Button";
 import { usePayload } from "@/hooks/use-payload";
 
 export default function EventCreation() {
@@ -56,29 +57,11 @@ export default function EventCreation() {
     setValue,
   });
 
-  const styles = StyleSheet.create({
-    // color handling might change later with the theme so i am not touching it
-    cell: {
-      width: 44,
-      height: 44,
-      lineHeight: 38,
-      fontSize: 20,
-      borderWidth: 2,
-      borderColor: "#00000030",
-      textAlign: "center",
-      borderRadius: 9,
-      textTransform: "uppercase",
-    },
-    focusCell: {
-      borderColor: "#000",
-    },
-  });
-
   return (
     <KeyboardAvoidingView
       keyboardVerticalOffset={Platform.select({ ios: 0, android: 0 })}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{ flex: 1, backgroundColor: "white" }}
+      style={{ flex: 1 }}
     >
       <ScrollView>
         <YStack padding="$4" gap="$4" marginTop="$17">
@@ -96,19 +79,30 @@ export default function EventCreation() {
             cellCount={CELL_COUNT}
             keyboardType="default"
             textContentType="oneTimeCode"
+            rootStyle={{ gap: 10, justifyContent: "center" }}
             renderCell={({ index, symbol, isFocused }) => (
-              <Text
+              <Input
                 key={index}
-                style={[styles.cell, isFocused && styles.focusCell]}
                 onLayout={getCellOnLayoutHandler(index)}
+                aspectRatio={1}
+                textAlign="center"
+                fontWeight="bold"
+                fontSize="$6"
               >
                 {symbol || (isFocused ? <Cursor /> : null)}
-              </Text>
+              </Input>
             )}
           />
-          <Button backgroundColor="#282828" color="white" onPress={onSubmit}>
-            Join
-          </Button>
+          <XStack justifyContent="center">
+            <Button
+              theme="accent"
+              onPress={onSubmit}
+              minWidth="$10"
+              disabled={value.length !== CELL_COUNT}
+            >
+              Join
+            </Button>
+          </XStack>
         </YStack>
       </ScrollView>
     </KeyboardAvoidingView>

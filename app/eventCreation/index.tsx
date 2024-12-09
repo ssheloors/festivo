@@ -9,13 +9,14 @@ import {
   Pressable,
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { YStack, SizableText, TextArea, XStack, ScrollView } from "tamagui";
+import { YStack, SizableText, XStack, ScrollView } from "tamagui";
 
 import { IconSymbol } from "../../components/ui/IconSymbol";
 
 import { Button } from "@/components/Button";
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { FormField } from "@/components/FormField";
+import { TextArea } from "@/components/Input";
 import { useEventCreation } from "@/hooks/use-event-creation";
 import { useUser } from "@/hooks/use-user";
 
@@ -163,7 +164,6 @@ export default function EventCreation() {
                 label="Event Description"
                 render={({ field, inputProps }) => (
                   <TextArea
-                    style={{ textAlignVertical: "top" }}
                     placeholder="Event description"
                     height={100}
                     {...inputProps}

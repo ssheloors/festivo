@@ -3,14 +3,7 @@ import { router } from "expo-router";
 import { useForm } from "react-hook-form";
 import { KeyboardAvoidingView, Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import {
-  Button,
-  getTokens,
-  ScrollView,
-  SizableText,
-  Spinner,
-  YStack,
-} from "tamagui";
+import { getTokens, ScrollView, SizableText, Spinner, YStack } from "tamagui";
 import { z } from "zod";
 
 import { FloatingActionButton } from "@/components/FloatingActionButton";
@@ -65,6 +58,7 @@ export default function Register() {
               name="name"
               inputProps={{
                 textContentType: "name",
+                autoCapitalize: "words",
               }}
             />
 

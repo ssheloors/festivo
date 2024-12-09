@@ -9,13 +9,14 @@ import {
 } from "react-hook-form";
 import { NativeSyntheticEvent, NativeTouchEvent } from "react-native";
 import {
-  Input,
   InputProps,
   Label,
   SizableText,
   SizableTextProps,
   YStack,
 } from "tamagui";
+
+import { Input } from "./Input";
 
 export function FormField<T extends FieldValues>({
   form,

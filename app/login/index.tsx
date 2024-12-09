@@ -4,13 +4,10 @@ import { useForm } from "react-hook-form";
 import { KeyboardAvoidingView, Platform, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
-  Button,
   getTokens,
   ScrollView,
   SizableText,
   Spinner,
-  Text,
-  useTheme,
   XStack,
   YStack,
 } from "tamagui";
@@ -27,8 +24,6 @@ const formSchema = z.object({
 });
 
 export default function Login() {
-  const theme = useTheme();
-
   const { bottom: bottomInset } = useSafeAreaInsets();
 
   const form = useForm<z.infer<typeof formSchema>>({

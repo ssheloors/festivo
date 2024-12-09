@@ -35,7 +35,8 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            <IconSymbol size={28} name="house.fill" color={color as any} />
           ),
         }}
       />
@@ -44,7 +45,8 @@ export default function TabLayout() {
         options={{
           title: "Explore",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            <IconSymbol size={28} name="paperplane.fill" color={color as any} />
           ),
         }}
       />

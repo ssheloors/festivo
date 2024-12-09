@@ -18,7 +18,7 @@ module.exports = {
     "no-promise-executor-return": "error",
     "no-return-await": "error",
     radix: "error",
-    "spaced-comment": "error",
+    "spaced-comment": ["error", "always", { markers: ["/"] }],
     yoda: "error",
     "no-extra-boolean-cast": "off",
     "import/named": "off",
