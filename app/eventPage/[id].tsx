@@ -36,19 +36,19 @@ export default function EventPage() {
       <ScrollView>
         <YStack padding="$4" gap="$3">
           <XStack>
-          <SizableText size="$10">{event.title}</SizableText>
+            <SizableText size="$10">{event.title}</SizableText>
             {joinStatus === "joined" && (
-            <SizableText
-              size="$4"
-              alignContent="center"
-              marginLeft="$6"
-              color="green" // TODO: Improve styling of this text
-            >
-              Registered!
-            </SizableText>
-          )}
-        </XStack>
-        <SizableText size="$4">{event.eventCode}</SizableText>
+              <SizableText
+                size="$4"
+                alignContent="center"
+                marginLeft="$6"
+                color="green" // TODO: Improve styling of this text
+              >
+                Registered!
+              </SizableText>
+            )}
+          </XStack>
+          <SizableText size="$4">{event.eventCode}</SizableText>
           <SizableText size="$4">
             <XStack gap="$2">
               <IconSymbol name="calendar" size={24} color="$color8" />
@@ -87,51 +87,50 @@ export default function EventPage() {
           )}
         </YStack>
       </ScrollView>
-      {(typeof event.organizer !== "number" &&
-        user?.id === event.organizer.id) || (
-        <FloatingActionButton
-          iconAfter={
-            <IconSymbol name="square.and.pencil" size={24} color="$color8" />
-          }
-          // onPress={() => navigation.navigate("eventEdit", { eventId: event.docs[0].id })}
-        >
-          Edit Event
-        </FloatingActionButton>
-      )}
-        {joinStatus !== "joined" &&
-          typeof event.organizer !== "number" &&
-          user?.id !== event.organizer.id && (
-            <Button
-              iconAfter={
-                <IconSymbol name="arrow.right" size={24} color="white" />
-              }
-              onPress={() =>
-                router.push({
-                  pathname: "/joinEvent/attendeeDetails",
-                  params: { code: event.eventCode, id: event.id },
-                })
-              }
-              backgroundColor="#282828"
-              color="white"
-            >
-              Join event
-            </Button>
-          )}
-        {joinStatus === "joined" &&
-          typeof event.organizer !== "number" &&
-          user?.id !== event.organizer.id && (
-            <Button
-              iconAfter={<IconSymbol name="cross" size={24} color="white" />}
-              // TODO: implement cancel attendance
-              // onPress={() => {
-              //   })
-              // }
-              backgroundColor="#282828"
-              color="white"
-            >
-              Cancel attendance
-            </Button>
-          )}
+      {joinStatus !== "joined" &&
+        typeof event.organizer !== "number" &&
+        user?.id === event.organizer.id && (
+          <FloatingActionButton
+            iconAfter={
+              <IconSymbol name="square.and.pencil" size={24} color="$color8" />
+            }
+            // onPress={() => navigation.navigate("eventEdit", { eventId: event.docs[0].id })}
+          >
+            Edit Event
+          </FloatingActionButton>
+        )}
+      {joinStatus !== "joined" &&
+        typeof event.organizer !== "number" &&
+        user?.id !== event.organizer.id && (
+          <FloatingActionButton
+            iconAfter={
+              <IconSymbol name="arrow.right" size={24} color="white" />
+            }
+            onPress={() =>
+              router.push({
+                pathname: "/joinEvent/attendeeDetails",
+                params: { code: event.eventCode, id: event.id },
+              })
+            }
+            color="white"
+          >
+            Join event
+          </FloatingActionButton>
+        )}
+      {joinStatus === "joined" &&
+        typeof event.organizer !== "number" &&
+        user?.id !== event.organizer.id && (
+          <FloatingActionButton
+            iconAfter={<IconSymbol name="cross" size={24} color="white" />}
+            // TODO: implement cancel attendance
+            // onPress={() => {
+            //   })
+            // }
+            color="white"
+          >
+            Cancel attendance
+          </FloatingActionButton>
+        )}
     </View>
   );
 }

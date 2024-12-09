@@ -33,7 +33,6 @@ export default function AttendeeDetails() {
     resolver: zodResolver(formSchema),
   });
   const onSubmit = form.handleSubmit(async () => {
-  const onSubmit = form.handleSubmit(async () => {
     try {
       await addAttendeeMutation.mutate({
         eventId: code,
