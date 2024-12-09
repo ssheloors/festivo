@@ -1,19 +1,21 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, router } from "expo-router";
 import { useForm } from "react-hook-form";
-import { KeyboardAvoidingView, Platform } from "react-native";
+import { KeyboardAvoidingView, Platform, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
-  Button,
   getTokens,
   ScrollView,
   SizableText,
   Spinner,
+  XStack,
   YStack,
 } from "tamagui";
 import { z } from "zod";
 
+import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { ErrorMessage, FormField } from "@/components/FormField";
+import { IconSymbol } from "@/components/ui/IconSymbol";
 import { useLogin } from "@/hooks/use-login";
 
 const formSchema = z.object({
@@ -38,6 +40,7 @@ export default function Login() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
     >
       <ScrollView>
         <YStack
@@ -45,15 +48,25 @@ export default function Login() {
           paddingBottom={getTokens().space.$4.val + bottomInset}
           gap="$8"
         >
-          <Link href="/login/register" asChild>
-            <Button variant="outlined">Register</Button>
-          </Link>
-
           <YStack alignItems="center" paddingTop="$6">
             <SizableText size="$14">🥳</SizableText>
             <SizableText size="$8" textAlign="center">
               Sign in to host events!
             </SizableText>
+
+            <XStack
+              gap="$2"
+              alignItems="center"
+              justifyContent="center"
+              paddingTop="$4"
+            >
+              <SizableText>Don't have an account yet?</SizableText>
+              <Link href="/login/register" asChild>
+                <Pressable>
+                  <SizableText color="$accentColor">Sign up here</SizableText>
+                </Pressable>
+              </Link>
+            </XStack>
           </YStack>
 
           <YStack gap="$2">
@@ -79,17 +92,17 @@ export default function Login() {
             />
           </YStack>
 
-          <Button
-            variant="outlined"
-            onPress={onSubmit}
-            icon={form.formState.isSubmitting ? <Spinner /> : null}
-          >
-            Log in
-          </Button>
-
           <ErrorMessage error={login.error} />
         </YStack>
       </ScrollView>
+
+      <FloatingActionButton
+        onPress={onSubmit}
+        icon={form.formState.isSubmitting ? <Spinner /> : null}
+        iconAfter={<IconSymbol name="arrow.right" color="$color12" />}
+      >
+        Log in
+      </FloatingActionButton>
     </KeyboardAvoidingView>
   );
 }

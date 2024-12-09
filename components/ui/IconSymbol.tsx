@@ -3,7 +3,10 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { SymbolWeight } from "expo-symbols";
 import React from "react";
-import { OpaqueColorValue, StyleProp, ViewStyle } from "react-native";
+import { StyleProp, ViewStyle } from "react-native";
+import { ColorTokens } from "tamagui";
+
+import { useHexColor } from "@/hooks/use-hex-color";
 
 // Add your SFSymbol to MaterialIcons mappings here.
 const MAPPING = {
@@ -42,16 +45,20 @@ export function IconSymbol({
 }: {
   name: IconSymbolName;
   size?: number;
-  color: string | OpaqueColorValue;
+  color: ColorTokens;
   style?: StyleProp<ViewStyle>;
   weight?: SymbolWeight;
 }) {
   return (
     <MaterialIcons
-      color={color}
+      color={useHexColor(color)}
       size={size}
       name={MAPPING[name]}
-      style={style}
+      // This is to make sure that this version of IconSymbol takes in the
+      // same props as the iOS version (which in this case is considered the
+      // reference)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      style={style as any}
     />
   );
 }

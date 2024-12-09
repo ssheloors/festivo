@@ -1,6 +1,9 @@
 import { config } from "@tamagui/config/v3";
 import { createTamagui } from "tamagui";
-const tamaguiConfig = createTamagui(config);
+
+import * as themes from "./theme-output";
+
+const tamaguiConfig = createTamagui({ ...config, themes });
 
 type Conf = typeof tamaguiConfig;
 

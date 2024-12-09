@@ -1,5 +1,17 @@
 import { Stack } from "expo-router";
+import { useTheme } from "tamagui";
 
 export default function Layout() {
-  return <Stack screenOptions={{ headerShown: false }}></Stack>;
+  const theme = useTheme();
+
+  return (
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        contentStyle: {
+          backgroundColor: theme.background.get(),
+        },
+      }}
+    />
+  );
 }
