@@ -1,10 +1,11 @@
-import { useLocalSearchParams, useRouter } from "expo-router";
-import React from "react";
+import { Link, useLocalSearchParams } from "expo-router";
+import React, { useEffect, useState } from "react";
 import { ScrollView, SizableText, Text, View, XStack, YStack } from "tamagui";
 
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { useEventById } from "@/hooks/use-event";
+import { useStorage } from "@/hooks/use-storage";
 import { useUser } from "@/hooks/use-user";
 
 export default function EventPage() {
@@ -13,13 +14,18 @@ export default function EventPage() {
   const { data: user } = useUser();
   const event = events?.docs[0];
 
-  const router = useRouter();
+  const storage = useStorage();
+  const [joinStatus, setJoinStatus] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (event) {
+      storage.getString(event.eventCode).then(setJoinStatus);
+    }
+  }, [event, storage]);
 
   if (!event) {
     return <Text>Loading...</Text>;
   }
-
-  const joinStatus = localStorage.getItem(event.eventCode);
 
   const formattedDate = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
@@ -81,7 +87,7 @@ export default function EventPage() {
                 (attendee) =>
                   typeof attendee !== "number" && (
                     <SizableText key={attendee.id}>{attendee.name}</SizableText>
-                  ),
+                  )
               )}
             </>
           )}
@@ -94,7 +100,6 @@ export default function EventPage() {
             iconAfter={
               <IconSymbol name="square.and.pencil" size={24} color="$color8" />
             }
-            // onPress={() => navigation.navigate("eventEdit", { eventId: event.docs[0].id })}
           >
             Edit Event
           </FloatingActionButton>
@@ -102,20 +107,19 @@ export default function EventPage() {
       {joinStatus !== "joined" &&
         typeof event.organizer !== "number" &&
         user?.id !== event.organizer.id && (
-          <FloatingActionButton
-            iconAfter={
-              <IconSymbol name="arrow.right" size={24} color="white" />
-            }
-            onPress={() =>
-              router.push({
-                pathname: "/joinEvent/attendeeDetails",
-                params: { code: event.eventCode, id: event.id },
-              })
-            }
-            color="white"
+          <Link
+            push
+            href={`/joinEvent/attendeeDetails?code=${encodeURIComponent(event.eventCode)}&id=${encodeURIComponent(event.id)}`}
           >
-            Join event
-          </FloatingActionButton>
+            <FloatingActionButton
+              iconAfter={
+                <IconSymbol name="arrow.right" size={24} color="white" />
+              }
+              color="white"
+            >
+              Join event
+            </FloatingActionButton>
+          </Link>
         )}
       {joinStatus === "joined" &&
         typeof event.organizer !== "number" &&
