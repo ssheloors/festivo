@@ -14,7 +14,6 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarBackground: BlurTabBarBackground,
-        // TODO: Verify that this actually works
         tabBarActiveTintColor: theme.accentColor.get(),
         tabBarActiveBackgroundColor: theme.color1.get(),
         tabBarStyle: {

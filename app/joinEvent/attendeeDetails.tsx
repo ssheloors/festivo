@@ -15,8 +15,7 @@ import { useAddAttendeeToEvent } from "@/hooks/use-add-attendee-to-event";
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email(),
-  comments: z.string().optional(),
-  code: z.string(),
+  comments: z.string(),
 });
 
 export default function AttendeeDetails() {
@@ -29,7 +28,6 @@ export default function AttendeeDetails() {
       name: "",
       email: "",
       comments: "",
-      code: code,
     },
     resolver: zodResolver(formSchema),
   });
@@ -37,9 +35,7 @@ export default function AttendeeDetails() {
     try {
       addAttendeeMutation.mutateAsync({
         eventId: code,
-        name: form.getValues("name"),
-        email: form.getValues("email"),
-        comments: form.getValues("comments") ?? "",
+        ...form.getValues(),
       });
       router.push({
         pathname: "/joinEvent/success",

@@ -12,6 +12,6 @@ export default function Layout() {
           backgroundColor: theme.background.get(),
         },
       }}
-    ></Stack>
+    />
   );
 }

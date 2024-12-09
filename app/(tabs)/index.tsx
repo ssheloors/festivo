@@ -53,7 +53,7 @@ export default function Index() {
       {data &&
         data.docs.map((event) => <Text key={event.id}>{event.title}</Text>)}
       <Link push href="/login" asChild>
-        <Button variant="outlined">To login 😍</Button>
+        <Button variant="outlined">To login</Button>
       </Link>
       <Link push href="/yourEvents" asChild>
         <Button variant="outlined">To events</Button>
