@@ -20,6 +20,7 @@ const formSchema = z.object({
 
 export default function AttendeeDetails() {
   const { code } = useLocalSearchParams() as { code: string };
+  const { id } = useLocalSearchParams() as { id: string };
   const router = useRouter();
   const addAttendeeMutation = useAddAttendeeToEvent(code);
 
@@ -33,13 +34,14 @@ export default function AttendeeDetails() {
   });
   const onSubmit = form.handleSubmit(async () => {
     try {
-      addAttendeeMutation.mutateAsync({
+      await addAttendeeMutation.mutate({
         eventId: code,
         ...form.getValues(),
       });
-      router.push({
-        pathname: "/joinEvent/success",
-        params: { code: code },
+      localStorage.setItem(code, "joined");
+      router.replace({
+        pathname: "/eventPage/[id]",
+        params: { id: id },
       });
     } catch (error) {
       alert("Error adding you to the event" + error);
