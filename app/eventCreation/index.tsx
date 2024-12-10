@@ -99,6 +99,7 @@ export default function EventCreation() {
                 label="Event title"
                 inputProps={{
                   placeholder: "eg. Bingo night",
+                  testID: "title-input",
                 }}
               />
               <FormField
@@ -107,6 +108,7 @@ export default function EventCreation() {
                 label="Event address"
                 inputProps={{
                   placeholder: "eg. Kungsportsplatsen 1",
+                  testID: "address-input",
                 }}
               />
               <FormField
@@ -168,6 +170,7 @@ export default function EventCreation() {
                     height={100}
                     {...inputProps}
                     onChangeText={field.onChange}
+                    testID="description-input"
                   />
                 )}
               />
@@ -178,6 +181,7 @@ export default function EventCreation() {
       <FloatingActionButton
         iconAfter={<IconSymbol name="arrow.right" color="$color12" />}
         onPress={onSubmit}
+        testID="submit-button"
       >
         Create event
       </FloatingActionButton>
