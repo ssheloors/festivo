@@ -3,8 +3,8 @@ import type { CollectionConfig } from 'payload'
 export const Users: CollectionConfig = {
   slug: 'users',
   access: {
-    create: () => true,
     read: () => true,
+    create: () => true,
     update: (args) => args.req.user?.id === args.id,
   },
   admin: {

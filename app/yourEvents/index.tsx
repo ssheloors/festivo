@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "expo-router";
-import { View, Text } from "react-native";
-import { Button, SizableText } from "tamagui";
+import { Button, ScrollView, SizableText } from "tamagui";
 
 import { usePayload } from "@/hooks/use-payload";
 
@@ -13,9 +12,9 @@ export default function Events() {
   });
 
   return (
-    <View>
+    <ScrollView>
       <SizableText size="$10">Your events</SizableText>
-      {isPending && <Text>Loading..</Text>}
+      {isPending && <SizableText size="$6">Loading..</SizableText>}
       {data &&
         data.docs.map((event) => (
           <Link
@@ -25,12 +24,12 @@ export default function Events() {
               params: { id: event.id },
             }}
           >
-            <Text>{event.title}</Text>
+            <SizableText size="$8">{event.title}</SizableText>
           </Link>
         ))}
       <Link href="./eventCreation" asChild>
         <Button>Add event</Button>
       </Link>
-    </View>
+    </ScrollView>
   );
 }

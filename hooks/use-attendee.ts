@@ -19,8 +19,10 @@ export function useEventsByAttendeeEmail(attendeeEmail: string) {
       const events = await payload.collections.event.find();
 
       const userEvents = events.docs.filter((event) =>
-        (event.attendees ?? []).some((attendee) =>
-          attendees.docs.some((a) => a.id === attendee)
+        (event.attendees ?? []).some(() =>
+          attendees.docs.some(
+            (thisAttendee) => thisAttendee.email === attendeeEmail
+          )
         )
       );
 

@@ -1,6 +1,5 @@
 import { Link } from "expo-router";
-import { View, Text } from "react-native";
-import { SizableText } from "tamagui";
+import { SizableText, ScrollView } from "tamagui";
 
 import { useEventsByAttendeeEmail } from "@/hooks/use-attendee";
 import { useUser } from "@/hooks/use-user";
@@ -8,17 +7,19 @@ import { useUser } from "@/hooks/use-user";
 export default function MyEvents() {
   const { data: user, isLoading: isUserLoading } = useUser();
   const { data: events, isLoading: isEventsLoading } = useEventsByAttendeeEmail(
-    user?.email || ""
+    user?.email || "",
   );
 
   if (isUserLoading || isEventsLoading) {
-    return <Text>Loading...</Text>;
+    return <SizableText>Loading...</SizableText>;
   }
 
   return (
-    <View>
+    <ScrollView>
       <SizableText size="$10">My events</SizableText>
-      {events?.docs.length === 0 && <Text>No events found.</Text>}
+      {events?.docs.length === 0 && (
+        <SizableText size="$6">No events found.</SizableText>
+      )}
       {events?.docs.map((event) => (
         <Link
           key={event.id}
@@ -27,9 +28,9 @@ export default function MyEvents() {
             params: { id: event.id },
           }}
         >
-          <Text>{event.title}</Text>
+          <SizableText size="$8">{event.title}</SizableText>
         </Link>
       ))}
-    </View>
+    </ScrollView>
   );
 }
