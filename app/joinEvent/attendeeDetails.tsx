@@ -11,6 +11,7 @@ import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { FormField } from "@/components/FormField";
 import { TextArea } from "@/components/Input";
 import { useAddAttendeeToEvent } from "@/hooks/use-add-attendee-to-event";
+import { useStorage } from "@/hooks/use-storage";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -20,8 +21,10 @@ const formSchema = z.object({
 
 export default function AttendeeDetails() {
   const { code } = useLocalSearchParams() as { code: string };
+  const { id } = useLocalSearchParams() as { id: string };
   const router = useRouter();
   const addAttendeeMutation = useAddAttendeeToEvent(code);
+  const storage = useStorage();
 
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
@@ -33,13 +36,14 @@ export default function AttendeeDetails() {
   });
   const onSubmit = form.handleSubmit(async () => {
     try {
-      addAttendeeMutation.mutateAsync({
+      await addAttendeeMutation.mutate({
         eventId: code,
         ...form.getValues(),
       });
-      router.push({
-        pathname: "/joinEvent/success",
-        params: { code: code },
+      storage.setString(code, "joined");
+      router.replace({
+        pathname: "/eventPage/[id]",
+        params: { id: id },
       });
     } catch (error) {
       alert("Error adding you to the event" + error);

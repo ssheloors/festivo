@@ -1,10 +1,11 @@
-import { useLocalSearchParams } from "expo-router";
-import React from "react";
+import { Link, useLocalSearchParams } from "expo-router";
+import React, { useEffect, useState } from "react";
 import { ScrollView, SizableText, Text, View, XStack, YStack } from "tamagui";
 
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { useEventById } from "@/hooks/use-event";
+import { useStorage } from "@/hooks/use-storage";
 import { useUser } from "@/hooks/use-user";
 
 export default function EventPage() {
@@ -12,7 +13,15 @@ export default function EventPage() {
   const { data: events } = useEventById(Number(id));
   const { data: user } = useUser();
   const event = events?.docs[0];
-  // const navigation = useNavigation();
+
+  const storage = useStorage();
+  const [joinStatus, setJoinStatus] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (event) {
+      storage.getString(event.eventCode).then(setJoinStatus);
+    }
+  }, [event, storage]);
 
   if (!event) {
     return <Text>Loading...</Text>;
@@ -32,7 +41,19 @@ export default function EventPage() {
     <View style={{ flex: 1 }}>
       <ScrollView>
         <YStack padding="$4" gap="$3">
-          <SizableText size="$10">{event.title}</SizableText>
+          <XStack>
+            <SizableText size="$10">{event.title}</SizableText>
+            {joinStatus === "joined" && (
+              <SizableText
+                size="$4"
+                alignContent="center"
+                marginLeft="$6"
+                color="green" // TODO: Improve styling of this text
+              >
+                Registered!
+              </SizableText>
+            )}
+          </XStack>
           <SizableText size="$4">{event.eventCode}</SizableText>
           <SizableText size="$4">
             <XStack gap="$2">
@@ -72,17 +93,52 @@ export default function EventPage() {
           )}
         </YStack>
       </ScrollView>
-      {(typeof event.organizer !== "number" &&
-        user?.id === event.organizer.id) || (
-        <FloatingActionButton
-          iconAfter={
-            <IconSymbol name="square.and.pencil" size={24} color="$color8" />
-          }
-          // onPress={() => navigation.navigate("eventEdit", { eventId: event.docs[0].id })}
-        >
-          Edit Event
-        </FloatingActionButton>
-      )}
+      {joinStatus !== "joined" &&
+        typeof event.organizer !== "number" &&
+        user?.id === event.organizer.id && (
+          <FloatingActionButton
+            iconAfter={
+              <IconSymbol name="square.and.pencil" size={24} color="$color8" />
+            }
+          >
+            Edit Event
+          </FloatingActionButton>
+        )}
+      {joinStatus !== "joined" &&
+        typeof event.organizer !== "number" &&
+        user?.id !== event.organizer.id && (
+          <Link
+            push
+            href={{
+              pathname: "/joinEvent/attendeeDetails",
+              params: { code: event.eventCode, id: event.id },
+            }}
+            asChild
+          >
+            <FloatingActionButton
+              iconAfter={
+                <IconSymbol name="arrow.right" size={24} color="white" />
+              }
+              color="white"
+            >
+              Join event
+            </FloatingActionButton>
+          </Link>
+        )}
+      {joinStatus === "joined" &&
+        typeof event.organizer !== "number" &&
+        user?.id !== event.organizer.id && (
+          <FloatingActionButton
+            iconAfter={<IconSymbol name="cross" size={24} color="white" />}
+            // TODO: implement cancel attendance
+            // onPress={() => {
+            //   })
+            // }
+            color="accent" // I like white for the text color, let's look into it
+          >
+            Cancel attendance
+          </FloatingActionButton>
+        )}
     </View>
   );
 }

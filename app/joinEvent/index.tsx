@@ -52,10 +52,13 @@ export default function EventCreation() {
         if (response.data?.docs.length === 0) {
           alert("Event not found");
         } else {
-          router.push({
-            pathname: "/joinEvent/attendeeDetails",
-            params: { code: value },
-          });
+          const eventId = response.data?.docs[0].id;
+          if (eventId !== undefined) {
+            router.push({
+              pathname: "/eventPage/[id]",
+              params: { id: eventId },
+            });
+          }
         }
       });
     } else {
