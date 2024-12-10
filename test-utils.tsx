@@ -1,7 +1,10 @@
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { render, RenderOptions } from "@testing-library/react";
+import { render, RenderOptions } from "@testing-library/react-native";
 import { ReactElement, ReactNode } from "react";
 import { TamaguiProvider } from "tamagui";
+
+import { PayloadClientContext } from "./components/PayloadClientProvider";
+import { createPayloadTestClient } from "./utils/payload-client";
 
 import tamaguiConfig from "@/tamagui.config";
 
@@ -14,17 +17,20 @@ global.console = {
   warn: jest.fn(),
   error: jest.fn(),
 };
+global.alert = jest.fn();
 
 jest.mock("./hooks/use-storage.ts");
 jest.mock("./hooks/use-user.ts");
-jest.mock("./utils/payload-client.ts");
 
 const queryClient = new QueryClient();
+export const payloadTestClient = createPayloadTestClient();
 
 export function AllTheProviders({ children }: { children: ReactNode }) {
   return (
     <QueryClientProvider client={queryClient}>
-      <TamaguiProvider config={tamaguiConfig}>{children}</TamaguiProvider>
+      <PayloadClientContext.Provider value={payloadTestClient}>
+        <TamaguiProvider config={tamaguiConfig}>{children}</TamaguiProvider>
+      </PayloadClientContext.Provider>
     </QueryClientProvider>
   );
 }
@@ -35,6 +41,6 @@ const customRender = (
 ) => render(ui, { wrapper: AllTheProviders, ...options });
 
 /* eslint-disable import/export */
-export * from "@testing-library/react";
+export * from "@testing-library/react-native";
 export { customRender as render };
 /* eslint-enable */

@@ -4,6 +4,7 @@ import * as SystemUI from "expo-system-ui";
 import { useEffect } from "react";
 import { TamaguiProvider } from "tamagui";
 
+import { PayloadClientProvider } from "@/components/PayloadClientProvider";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import tamaguiConfig from "@/tamagui.config";
 
@@ -21,50 +22,52 @@ export default function RootLayout() {
   return (
     <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme}>
       <QueryClientProvider client={queryClient}>
-        <Stack
-          screenOptions={{
-            // headerTransparent: true,
-            headerTintColor: theme.accentColor.val,
-            headerStyle: {
-              backgroundColor: theme.color2.val,
-            },
-            contentStyle: {
-              backgroundColor: "transparent",
-            },
-          }}
-        >
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen
-            name="login"
-            options={{
-              title: "Sign in",
+        <PayloadClientProvider>
+          <Stack
+            screenOptions={{
+              // headerTransparent: true,
+              headerTintColor: theme.accentColor.val,
+              headerStyle: {
+                backgroundColor: theme.color2.val,
+              },
+              contentStyle: {
+                backgroundColor: "transparent",
+              },
             }}
-          />
-          <Stack.Screen
-            name="yourEvents"
-            options={{
-              title: "",
-            }}
-          />
-          <Stack.Screen
-            name="eventCreation"
-            options={{
-              title: "",
-            }}
-          />
-          <Stack.Screen
-            name="joinEvent"
-            options={{
-              title: "",
-            }}
-          />
-          <Stack.Screen
-            name="eventPage"
-            options={{
-              title: "",
-            }}
-          />
-        </Stack>
+          >
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen
+              name="login"
+              options={{
+                title: "Sign in",
+              }}
+            />
+            <Stack.Screen
+              name="yourEvents"
+              options={{
+                title: "",
+              }}
+            />
+            <Stack.Screen
+              name="eventCreation"
+              options={{
+                title: "",
+              }}
+            />
+            <Stack.Screen
+              name="joinEvent"
+              options={{
+                title: "",
+              }}
+            />
+            <Stack.Screen
+              name="eventPage"
+              options={{
+                title: "",
+              }}
+            />
+          </Stack>
+        </PayloadClientProvider>
       </QueryClientProvider>
     </TamaguiProvider>
   );
