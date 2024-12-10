@@ -87,7 +87,7 @@ export default function EventPage() {
                 (attendee) =>
                   typeof attendee !== "number" && (
                     <SizableText key={attendee.id}>{attendee.name}</SizableText>
-                  ),
+                  )
               )}
             </>
           )}
@@ -109,7 +109,11 @@ export default function EventPage() {
         user?.id !== event.organizer.id && (
           <Link
             push
-            href={`/joinEvent/attendeeDetails?code=${encodeURIComponent(event.eventCode)}&id=${encodeURIComponent(event.id)}`}
+            href={{
+              pathname: "/joinEvent/attendeeDetails",
+              params: { code: event.eventCode, id: event.id },
+            }}
+            asChild
           >
             <FloatingActionButton
               iconAfter={
@@ -130,7 +134,7 @@ export default function EventPage() {
             // onPress={() => {
             //   })
             // }
-            color="white"
+            color="accent" // I like white for the text color, let's look into it
           >
             Cancel attendance
           </FloatingActionButton>

@@ -11,6 +11,7 @@ import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { FormField } from "@/components/FormField";
 import { TextArea } from "@/components/Input";
 import { useAddAttendeeToEvent } from "@/hooks/use-add-attendee-to-event";
+import { useStorage } from "@/hooks/use-storage";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -23,6 +24,7 @@ export default function AttendeeDetails() {
   const { id } = useLocalSearchParams() as { id: string };
   const router = useRouter();
   const addAttendeeMutation = useAddAttendeeToEvent(code);
+  const storage = useStorage();
 
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
@@ -38,7 +40,7 @@ export default function AttendeeDetails() {
         eventId: code,
         ...form.getValues(),
       });
-      localStorage.setItem(code, "joined");
+      storage.setString(code, "joined");
       router.replace({
         pathname: "/eventPage/[id]",
         params: { id: id },
