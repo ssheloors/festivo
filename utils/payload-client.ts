@@ -31,19 +31,30 @@ export function createPayloadClient(options: Partial<FetchOptions> = {}) {
 }
 
 export function createPayloadTestClient() {
+  const verbsCache = new Map<string | symbol, Record<Verbs, jest.Mock>>();
+
   return {
     collections: new Proxy(
       {},
       {
-        get: () => ({
-          find: jest.fn(),
-          create: jest.fn(),
-          delete: jest.fn(),
-          update: jest.fn(),
-          findById: jest.fn(),
-          updateById: jest.fn(),
-          deleteById: jest.fn(),
-        }),
+        get: (_, p) => {
+          const cached = verbsCache.get(p);
+          if (cached) {
+            return cached;
+          } else {
+            const verbs = {
+              find: jest.fn(),
+              create: jest.fn(),
+              delete: jest.fn(),
+              update: jest.fn(),
+              findById: jest.fn(),
+              updateById: jest.fn(),
+              deleteById: jest.fn(),
+            };
+            verbsCache.set(p, verbs);
+            return verbs;
+          }
+        },
       },
     ),
     globals: new Proxy({}, {}),
