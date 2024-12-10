@@ -42,6 +42,12 @@ export default function RootLayout() {
               title: "",
             }}
           />
+          <Stack.Screen
+            name="myEvents"
+            options={{
+              title: "",
+            }}
+          />
         </Stack>
       </QueryClientProvider>
     </TamaguiProvider>
