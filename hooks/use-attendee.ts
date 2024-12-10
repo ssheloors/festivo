@@ -21,9 +21,9 @@ export function useEventsByAttendeeEmail(attendeeEmail: string) {
       const userEvents = events.docs.filter((event) =>
         (event.attendees ?? []).some(() =>
           attendees.docs.some(
-            (thisAttendee) => thisAttendee.email === attendeeEmail
-          )
-        )
+            (thisAttendee) => thisAttendee.email === attendeeEmail,
+          ),
+        ),
       );
 
       return { docs: userEvents };
