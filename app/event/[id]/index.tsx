@@ -71,6 +71,11 @@ export default function EventPage() {
   ];
   if (hasJoined) chips.push({ text: "Registered", theme: "accent" });
 
+  const chips: ChipData[] = [
+    { text: `Event code: ${event.eventCode}`, theme: "alt1" },
+  ];
+  if (hasJoined) chips.push({ text: "Registered", theme: "accent" });
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView>
