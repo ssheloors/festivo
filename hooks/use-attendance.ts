@@ -40,3 +40,23 @@ export function useAddAttendance() {
     },
   });
 }
+
+export function useAllAttendance() {
+  const storage = useStorage();
+  const baseKey = makeKey("");
+
+  return useQuery({
+    queryKey: ["attendance"],
+    queryFn: async () => {
+      const keys = (await storage.getKeys()).filter((key) =>
+        key.startsWith(baseKey),
+      );
+      return Promise.all(
+        keys.map(async (key) => {
+          const obj = await storage.getObject(key);
+          return obj as PayloadConfig["collections"]["attendee"];
+        }),
+      );
+    },
+  });
+}
