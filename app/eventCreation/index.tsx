@@ -9,6 +9,7 @@ import {
   Pressable,
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { showToastable } from "react-native-toastable";
 import { YStack, SizableText, XStack, ScrollView } from "tamagui";
 
 import { IconSymbol } from "../../components/ui/IconSymbol";
@@ -38,7 +39,11 @@ export default function EventCreation() {
 
   const onSubmit = form.handleSubmit(async ({ eventDate, ...data }) => {
     if (!user) {
-      alert("You must be logged in to create an event.");
+      showToastable({
+        message: "You must be logged in to create an event",
+        duration: 2000,
+        status: "success",
+      });
       return;
     }
 
@@ -48,13 +53,18 @@ export default function EventCreation() {
         ...data,
         organizer: user.id,
       });
+      showToastable({
+        message: "Hooray! Event created successfully",
+        duration: 2000,
+        status: "success",
+      });
       router.push("/yourEvents");
-    } catch (error) {
-      alert(
-        error instanceof Error
-          ? error.message
-          : "You are not allowed to perform this action.",
-      );
+    } catch {
+      showToastable({
+        message: "Error creating event",
+        duration: 2000,
+        status: "warning",
+      });
     }
   });
 
