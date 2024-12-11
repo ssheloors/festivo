@@ -23,6 +23,7 @@ export default function EventPage() {
   if (!event) {
     return <Text>Loading...</Text>;
   }
+  console.log(event);
 
   const formattedDate = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
@@ -32,7 +33,7 @@ export default function EventPage() {
     hour: "numeric",
     minute: "numeric",
     hour12: false,
-  }).format();
+  }).format(new Date(event.eventDate));
 
   return (
     <View style={{ flex: 1 }}>
@@ -85,7 +86,7 @@ export default function EventPage() {
                 (attendee) =>
                   typeof attendee !== "number" && (
                     <SizableText key={attendee.id}>{attendee.name}</SizableText>
-                  ),
+                  )
               )}
             </>
           )}
