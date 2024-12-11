@@ -18,9 +18,9 @@ const formSchema = z.object({
 });
 
 export default function AttendeeDetails() {
-  const { code, id } = useLocalSearchParams() as { code: string; id: string };
+  const { id } = useLocalSearchParams() as { id: string };
   const router = useRouter();
-  const addAttendeeMutation = useAddAttendeeToEvent(code);
+  const addAttendeeMutation = useAddAttendeeToEvent(Number(id));
 
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
@@ -33,14 +33,8 @@ export default function AttendeeDetails() {
 
   const onSubmit = form.handleSubmit(async () => {
     try {
-      await addAttendeeMutation.mutateAsync({
-        eventId: code,
-        ...form.getValues(),
-      });
-      router.replace({
-        pathname: "/eventPage/[id]",
-        params: { id: id },
-      });
+      await addAttendeeMutation.mutateAsync(form.getValues());
+      router.dismiss();
     } catch (error) {
       alert("Error adding you to the event" + error);
     }

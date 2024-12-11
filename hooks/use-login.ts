@@ -38,3 +38,18 @@ export function useLogin() {
     },
   });
 }
+
+export function useSignOut() {
+  const storage = useStorage();
+
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["user"],
+    mutationFn: async () => {
+      await storage.removeItem("payload-token");
+      await queryClient.invalidateQueries({ queryKey: ["user"] });
+      await queryClient.invalidateQueries({ queryKey: ["user-token"] });
+    },
+  });
+}

@@ -7,11 +7,19 @@ export default function Layout() {
   return (
     <Stack
       screenOptions={{
-        headerShown: false,
         contentStyle: {
           backgroundColor: theme.background.get(),
         },
       }}
-    />
+    >
+      <Stack.Screen name="[id]/index" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="[id]/join"
+        options={{
+          presentation: "modal",
+          headerShown: false,
+        }}
+      />
+    </Stack>
   );
 }

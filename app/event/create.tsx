@@ -48,7 +48,7 @@ export default function EventCreation() {
         ...data,
         organizer: user.id,
       });
-      router.push("/yourEvents");
+      router.push("/created-events");
     } catch (error) {
       alert(
         error instanceof Error

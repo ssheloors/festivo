@@ -14,6 +14,10 @@ export function useStorage() {
       return AsyncStorage.getAllKeys();
     },
 
+    async removeItem(key: string) {
+      return AsyncStorage.removeItem(key);
+    },
+
     async getObject(key: string) {
       const json = await this.getString(key);
       if (!json) return null;

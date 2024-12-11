@@ -4,7 +4,7 @@ export const Button = styled(TamaguiButton, {
   variants: {
     unstyled: {
       false: {
-        backgroundColor: "$color4",
+        backgroundcolor: "$color4",
         color: "$color12",
       },
     },

@@ -6,7 +6,7 @@ import {
   setLocalSearchParams,
 } from "@/test-utils";
 
-import EventPage from "../../../app/eventPage/[id]";
+import EventPage from "../../../app/event/[id]";
 
 import { user as mockUser } from "@/hooks/__mocks__/use-user";
 import { PayloadConfig } from "@/utils/payload-client";

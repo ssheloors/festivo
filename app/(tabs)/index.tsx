@@ -1,69 +1,126 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link } from "expo-router";
-import { Button, YStack, Text, Spinner } from "tamagui";
+import { useQuery } from "@tanstack/react-query";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { Keyboard, KeyboardAvoidingView, Platform } from "react-native";
+import {
+  CodeField,
+  Cursor,
+  useBlurOnFulfill,
+  useClearByFocusCell,
+} from "react-native-confirmation-code-field";
+import { SizableText, YStack, XStack, styled, Text } from "tamagui";
 
+import { Button } from "@/components/Button";
 import { usePayload } from "@/hooks/use-payload";
-import { useUser } from "@/hooks/use-user";
 
-export default function Index() {
+const Cell = styled(Text, {
+  borderWidth: 1,
+  borderColor: "$color5",
+  backgroundColor: "$color2",
+  color: "$color9",
+  justifyContent: "flex-start",
+  aspectRatio: 1,
+  textAlign: "center",
+  fontWeight: "bold",
+  fontSize: "$6",
+  height: 44,
+  lineHeight: 42,
+  borderRadius: "$radius.true",
+});
+
+export default function EventCreation() {
   const payload = usePayload();
 
-  const { data, isPending } = useQuery({
-    queryKey: ["events"],
-    queryFn: () => payload.collections.event.find(),
+  // for the separated input field
+  const CELL_COUNT = 6;
+  const [value, setValue] = useState("");
+  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    value,
+    setValue,
   });
 
-  const user = useUser();
-  const queryClient = useQueryClient();
-
-  const changeNameMutation = useMutation({
-    mutationFn: async () => {
-      if (!user.data) {
-        return;
-      }
-
-      await payload.collections.users.update({
-        patch: {
-          name: "Lena",
-        },
+  const { refetch } = useQuery({
+    queryKey: ["events", value],
+    queryFn: () =>
+      payload.collections.event.find({
         where: {
-          id: {
-            equals: user.data.id,
+          eventCode: {
+            equals: value,
           },
         },
-      });
-
-      await queryClient.invalidateQueries({
-        queryKey: ["user"],
-      });
-    },
+      }),
+    enabled: false,
   });
 
+  const router = useRouter();
+
+  const onSubmit = () => {
+    refetch().then((response) => {
+      if (response.data?.docs.length === 0) {
+        alert("Event not found");
+      } else {
+        const eventId = response.data?.docs[0].id;
+        if (eventId !== undefined) {
+          router.push({
+            pathname: "/event/[id]",
+            params: { id: eventId },
+          });
+        }
+      }
+    });
+  };
+
   return (
-    <YStack gap="$4" padding="$4">
-      {user.data && (
-        <Button
-          onPress={() => changeNameMutation.mutate()}
-          icon={changeNameMutation.isPending ? <Spinner /> : null}
-        >
-          Hello {user.data.name}
-        </Button>
-      )}
-      {isPending && <Text>Loading..</Text>}
-      {data &&
-        data.docs.map((event) => <Text key={event.id}>{event.title}</Text>)}
-      <Link push href="/login" asChild>
-        <Button variant="outlined">To login</Button>
-      </Link>
-      <Link push href="/yourEvents" asChild>
-        <Button variant="outlined">To your events</Button>
-      </Link>
-      <Link push href="/joinEvent" asChild>
-        <Button variant="outlined">Join an event</Button>
-      </Link>
-      <Link push href="/myEvents" asChild>
-        <Button variant="outlined">To my events</Button>
-      </Link>
-    </YStack>
+    <KeyboardAvoidingView
+      keyboardVerticalOffset={Platform.select({ ios: 0, android: 0 })}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <YStack
+        padding="$4"
+        gap="$4"
+        flex={1}
+        justifyContent="center"
+        paddingBottom="$14"
+        onPress={Keyboard.dismiss}
+      >
+        <SizableText size="$9" fontWeight="bold" textAlign="center">
+          Join an event
+        </SizableText>
+        <SizableText textAlign="center">
+          Type in the code of an event to sign up
+        </SizableText>
+        <CodeField
+          ref={ref}
+          {...props}
+          value={value}
+          onChangeText={(v) => setValue(v.toUpperCase())}
+          cellCount={CELL_COUNT}
+          keyboardType="default"
+          textContentType="oneTimeCode"
+          rootStyle={{ gap: 10, justifyContent: "center" }}
+          renderCell={({ index, symbol, isFocused }) => (
+            <Cell key={index} onLayout={getCellOnLayoutHandler(index)}>
+              {symbol || (isFocused ? <Cursor /> : null)}
+            </Cell>
+          )}
+        />
+        <XStack justifyContent="center">
+          <Button
+            theme="accent"
+            onPress={onSubmit}
+            minWidth="$10"
+            disabled={value.length !== CELL_COUNT}
+          >
+            Join
+          </Button>
+        </XStack>
+      </YStack>
+    </KeyboardAvoidingView>
   );
 }
