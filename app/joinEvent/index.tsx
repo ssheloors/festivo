@@ -8,6 +8,7 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
+import { showToastable } from "react-native-toastable";
 import { SizableText, YStack, ScrollView, XStack, styled, Text } from "tamagui";
 
 import { Button } from "@/components/Button";
@@ -56,19 +57,30 @@ export default function EventCreation() {
   const router = useRouter();
 
   const onSubmit = () => {
-    refetch().then((response) => {
-      if (response.data?.docs.length === 0) {
-        alert("Event not found");
-      } else {
-        const eventId = response.data?.docs[0].id;
+    if (value !== "") {
+      refetch().then((response) => {
+        if (response.data?.docs.length === 0) {
+          showToastable({
+            message: "Whoops! Event not found",
+            duration: 2000,
+            status: "success",
+          });
+        } else {
+          const eventId = response.data?.docs[0].id;
         if (eventId !== undefined) {
           router.push({
             pathname: "/eventPage/[id]",
             params: { id: eventId },
           });
         }
-      }
-    });
+      });
+    } else {
+      showToastable({
+        message: "Please enter the code!",
+        duration: 2000,
+        status: "success",
+      });
+    }
   };
 
   return (

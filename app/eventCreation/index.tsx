@@ -19,6 +19,7 @@ import { FormField } from "@/components/FormField";
 import { TextArea } from "@/components/Input";
 import { useEventCreation } from "@/hooks/use-event-creation";
 import { useUser } from "@/hooks/use-user";
+import { showToastable } from "react-native-toastable";
 
 export default function EventCreation() {
   const form = useForm({
@@ -38,7 +39,11 @@ export default function EventCreation() {
 
   const onSubmit = form.handleSubmit(async ({ eventDate, ...data }) => {
     if (!user) {
-      alert("You must be logged in to create an event.");
+      showToastable({
+        message: "You must be logged in to create an event",
+        duration: 2000,
+        status: "success",
+      });
       return;
     }
 

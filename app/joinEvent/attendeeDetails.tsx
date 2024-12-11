@@ -10,6 +10,7 @@ import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { FormField } from "@/components/FormField";
 import { TextArea } from "@/components/Input";
 import { useAddAttendeeToEvent } from "@/hooks/use-add-attendee-to-event";
+import { showToastable } from "react-native-toastable";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -42,7 +43,11 @@ export default function AttendeeDetails() {
         params: { id: id },
       });
     } catch (error) {
-      alert("Error adding you to the event" + error);
+      showToastable({
+        message: "Error adding you to the event" + error,
+        duration: 2000,
+        status: "success",
+      });
     }
   });
 
