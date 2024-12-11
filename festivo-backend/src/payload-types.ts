@@ -19,7 +19,11 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    event: {
+      attendees: 'attendee';
+    };
+  };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -110,7 +114,10 @@ export interface Event {
   description?: string | null;
   organizer: number | User;
   address: string;
-  attendees?: (number | Attendee)[] | null;
+  attendees?: {
+    docs?: (number | Attendee)[] | null;
+    hasNextPage?: boolean | null;
+  } | null;
   updatedAt: string;
   createdAt: string;
 }

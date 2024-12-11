@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLocalSearchParams } from "expo-router";
-import { useRouter } from "expo-router";
+import { useRouter, useLocalSearchParams } from "expo-router";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { KeyboardAvoidingView, Platform } from "react-native";
@@ -11,7 +10,6 @@ import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { FormField } from "@/components/FormField";
 import { TextArea } from "@/components/Input";
 import { useAddAttendeeToEvent } from "@/hooks/use-add-attendee-to-event";
-import { useStorage } from "@/hooks/use-storage";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -20,11 +18,9 @@ const formSchema = z.object({
 });
 
 export default function AttendeeDetails() {
-  const { code } = useLocalSearchParams() as { code: string };
-  const { id } = useLocalSearchParams() as { id: string };
+  const { code, id } = useLocalSearchParams() as { code: string; id: string };
   const router = useRouter();
   const addAttendeeMutation = useAddAttendeeToEvent(code);
-  const storage = useStorage();
 
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
@@ -34,13 +30,13 @@ export default function AttendeeDetails() {
     },
     resolver: zodResolver(formSchema),
   });
+
   const onSubmit = form.handleSubmit(async () => {
     try {
-      await addAttendeeMutation.mutate({
+      await addAttendeeMutation.mutateAsync({
         eventId: code,
         ...form.getValues(),
       });
-      storage.setString(code, "joined");
       router.replace({
         pathname: "/eventPage/[id]",
         params: { id: id },
@@ -74,6 +70,7 @@ export default function AttendeeDetails() {
               placeholder: "Jane Doe",
               textContentType: "name",
               autoCapitalize: "words",
+              testID: "name-input",
             }}
           />
           <FormField
@@ -85,6 +82,7 @@ export default function AttendeeDetails() {
               keyboardType: "email-address",
               textContentType: "emailAddress",
               autoCapitalize: "none",
+              testID: "email-input",
             }}
           />
 
@@ -98,6 +96,7 @@ export default function AttendeeDetails() {
                 height={100}
                 {...inputProps}
                 onChangeText={field.onChange}
+                testID="comments-input"
               />
             )}
           />
@@ -109,6 +108,7 @@ export default function AttendeeDetails() {
         onPress={onSubmit}
         disabled={!form.formState.isValid}
         icon={addAttendeeMutation.isPending ? <Spinner /> : null}
+        testID="submit-button"
       >
         Submit
       </FloatingActionButton>
