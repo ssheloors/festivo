@@ -24,15 +24,15 @@ export default function RootLayout() {
       <QueryClientProvider client={queryClient}>
         <PayloadClientProvider>
           <Toastable
-          position="top"
-          statusMap={{
-            success: theme.accentColor.val,
-            danger: theme.accentColor.val,
-            warning: theme.accentColor.val,
-            info: theme.accentColor.val,
-          }}
-        />
-        <Stack
+            position="top"
+            statusMap={{
+              success: theme.accentColor.val,
+              danger: theme.accentColor.val,
+              warning: theme.accentColor.val,
+              info: theme.accentColor.val,
+            }}
+          />
+          <Stack
             screenOptions={{
               // headerTransparent: true,
               headerTintColor: theme.accentColor.val,
