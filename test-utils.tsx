@@ -1,9 +1,11 @@
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { render, RenderOptions } from "@testing-library/react-native";
+import * as expoRouter from "expo-router";
 import { ReactElement, ReactNode } from "react";
 import { TamaguiProvider } from "tamagui";
 
 import { PayloadClientContext } from "./components/PayloadClientProvider";
+import * as useStorageModule from "./hooks/use-storage";
 import { createPayloadTestClient } from "./utils/payload-client";
 
 import tamaguiConfig from "@/tamagui.config";
@@ -19,11 +21,21 @@ global.console = {
 };
 global.alert = jest.fn();
 
+let mockedRouterParams: expoRouter.UnknownOutputParams = {};
+
+jest.mock("expo-router");
+const mockedRouter = jest.mocked(expoRouter);
+mockedRouter.useLocalSearchParams.mockImplementation(() => mockedRouterParams);
+mockedRouter.Link = jest.requireActual("expo-router").Link;
+
 jest.mock("./hooks/use-storage.ts");
 jest.mock("./hooks/use-user.ts");
 
 const queryClient = new QueryClient();
-export const payloadTestClient = createPayloadTestClient();
+export let payloadTestClient = createPayloadTestClient();
+beforeEach(() => {
+  payloadTestClient = createPayloadTestClient();
+});
 
 export function AllTheProviders({ children }: { children: ReactNode }) {
   return (
@@ -34,6 +46,18 @@ export function AllTheProviders({ children }: { children: ReactNode }) {
     </QueryClientProvider>
   );
 }
+
+export function setLocalSearchParams(params: expoRouter.UnknownOutputParams) {
+  mockedRouterParams = params;
+}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const memoryStorage = (useStorageModule as any).memoryStorage as Map<
+  string,
+  string
+>;
+beforeEach(() => {
+  memoryStorage.clear();
+});
 
 const customRender = (
   ui: ReactElement,

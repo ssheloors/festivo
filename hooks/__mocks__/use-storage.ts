@@ -1,13 +1,13 @@
-const map = new Map<string, string>();
+export const memoryStorage = new Map<string, string>();
 
 export const useStorage = jest.fn().mockImplementation(() => {
   return {
     async getString(key: string) {
-      return map.get(key) ?? null;
+      return memoryStorage.get(key) ?? null;
     },
 
     async setString(key: string, value: string) {
-      map.set(key, value);
+      memoryStorage.set(key, value);
     },
 
     async getObject(key: string) {

@@ -1,5 +1,3 @@
-import { user } from "../../hooks/__mocks__/use-user";
-
 import {
   fireEvent,
   payloadTestClient,
@@ -8,8 +6,8 @@ import {
   waitFor,
 } from "@/test-utils";
 
-// eslint-disable-next-line import/order
-import EventCreationPage from "./index";
+import EventCreationPage from "../../../app/eventCreation/index";
+import { user } from "../../../hooks/__mocks__/use-user";
 
 it(`submits inputted values`, async () => {
   render(<EventCreationPage />);
@@ -29,7 +27,7 @@ it(`submits inputted values`, async () => {
 
   fireEvent.press(submitButton);
 
-  await waitFor(() => {
+  await waitFor(() =>
     expect(payloadTestClient.collections.event.create).toHaveBeenCalledWith({
       doc: expect.objectContaining({
         title,
@@ -37,6 +35,6 @@ it(`submits inputted values`, async () => {
         description,
         organizer: user.id,
       }),
-    });
-  });
+    }),
+  );
 });

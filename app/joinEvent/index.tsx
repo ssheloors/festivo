@@ -31,8 +31,17 @@ const Cell = styled(Text, {
 export default function EventCreation() {
   const payload = usePayload();
 
+  // for the separated input field
+  const CELL_COUNT = 6;
+  const [value, setValue] = useState("");
+  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    value,
+    setValue,
+  });
+
   const { refetch } = useQuery({
-    queryKey: ["events"],
+    queryKey: ["events", value],
     queryFn: () =>
       payload.collections.event.find({
         where: {
@@ -47,33 +56,20 @@ export default function EventCreation() {
   const router = useRouter();
 
   const onSubmit = () => {
-    if (value !== "") {
-      refetch().then((response) => {
-        if (response.data?.docs.length === 0) {
-          alert("Event not found");
-        } else {
-          const eventId = response.data?.docs[0].id;
-          if (eventId !== undefined) {
-            router.push({
-              pathname: "/eventPage/[id]",
-              params: { id: eventId },
-            });
-          }
+    refetch().then((response) => {
+      if (response.data?.docs.length === 0) {
+        alert("Event not found");
+      } else {
+        const eventId = response.data?.docs[0].id;
+        if (eventId !== undefined) {
+          router.push({
+            pathname: "/eventPage/[id]",
+            params: { id: eventId },
+          });
         }
-      });
-    } else {
-      alert("Please input the code");
-    }
+      }
+    });
   };
-
-  // for the separated input field
-  const CELL_COUNT = 6;
-  const [value, setValue] = useState("");
-  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-    value,
-    setValue,
-  });
 
   return (
     <KeyboardAvoidingView

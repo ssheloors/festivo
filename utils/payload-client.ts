@@ -7,6 +7,13 @@ export type PayloadConfig = Config;
 export type PayloadLocales = "en";
 
 export type PayloadClient = RPC<PayloadConfig, PayloadLocales>;
+export type PayloadTestClient = {
+  [T in keyof PayloadClient]: {
+    [K in keyof PayloadClient[T]]: {
+      [F in keyof PayloadClient[T][K]]: jest.Mock;
+    };
+  };
+};
 
 type Verbs =
   | "find"
@@ -15,12 +22,15 @@ type Verbs =
   | "delete"
   | "findById"
   | "updateById"
-  | "deleteById";
+  | "deleteById"
+  | "createDraft";
 
 export const payloadApiUrl =
   process.env.PAYLOAD_API_URL ?? "http://localhost:3000/api";
 
-export function createPayloadClient(options: Partial<FetchOptions> = {}) {
+export function createPayloadClient(
+  options: Partial<FetchOptions> = {},
+): PayloadClient {
   const payloadClient = createClient<PayloadConfig, PayloadLocales>({
     apiUrl: payloadApiUrl,
     cache: "no-store",
@@ -30,7 +40,7 @@ export function createPayloadClient(options: Partial<FetchOptions> = {}) {
   return payloadClient;
 }
 
-export function createPayloadTestClient() {
+export function createPayloadTestClient(): PayloadTestClient {
   const verbsCache = new Map<string | symbol, Record<Verbs, jest.Mock>>();
 
   return {
@@ -50,18 +60,17 @@ export function createPayloadTestClient() {
               findById: jest.fn(),
               updateById: jest.fn(),
               deleteById: jest.fn(),
+              createDraft: jest.fn(),
             };
             verbsCache.set(p, verbs);
             return verbs;
           }
         },
       },
-    ),
-    globals: new Proxy({}, {}),
-  } as unknown as {
-    collections: Record<
-      Exclude<keyof Config["collections"], `payload-${string}`>,
-      Record<Verbs, jest.Mock>
-    >;
+    ) as Record<keyof PayloadConfig["collections"], Record<Verbs, jest.Mock>>,
+    globals: new Proxy({}, {}) as Record<
+      keyof PayloadConfig["globals"],
+      unknown
+    >,
   };
 }

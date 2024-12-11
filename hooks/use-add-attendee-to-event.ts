@@ -1,11 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 
+import { useAddAttendance } from "./use-attendance";
 import { usePayload } from "./use-payload";
 
 export function useAddAttendeeToEvent(code: string) {
   const payload = usePayload();
   const queryClient = useQueryClient();
+
+  const addAttenance = useAddAttendance();
 
   // Create a new attendee in the attendees collection
   const addAttendeeMutation = useMutation({
@@ -15,7 +18,9 @@ export function useAddAttendeeToEvent(code: string) {
       email: string;
       comments: string;
     }) => {
-      const event = await payload.collections.event.find({
+      const {
+        docs: [event],
+      } = await payload.collections.event.find({
         // find the event first to be able to reference its id when creating the attendee
         where: {
           eventCode: {
@@ -28,17 +33,14 @@ export function useAddAttendeeToEvent(code: string) {
           name: data.name,
           email: data.email,
           comments: data.comments,
-          event: event.docs[0].id,
+          event: event.id,
         },
       });
-      await payload.collections.event.update({
-        patch: {
-          attendees: [attendee.doc.id],
-        },
-        where: {
-          eventCode: { equals: data.eventId },
-        },
+      await addAttenance.mutateAsync({
+        eventId: event.id,
+        attendee: attendee.doc,
       });
+      return attendee;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["attendees"] });
