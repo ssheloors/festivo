@@ -34,7 +34,9 @@ export default function Login() {
 
   const onSubmit = form.handleSubmit(async (data) => {
     await login.mutateAsync(data);
-    router.back();
+    router.replace({
+      pathname: "/(tabs)/host",
+    });
   });
 
   return (

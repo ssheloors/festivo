@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import * as SystemUI from "expo-system-ui";
 import { useEffect } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { TamaguiProvider } from "tamagui";
 
 import { PayloadClientProvider } from "@/components/PayloadClientProvider";
@@ -19,51 +20,29 @@ export default function RootLayout() {
     SystemUI.setBackgroundColorAsync(bgColor);
   }, [theme.background]);
 
+  const safeAreaInsets = useSafeAreaInsets();
+
   return (
     <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme}>
       <QueryClientProvider client={queryClient}>
         <PayloadClientProvider>
           <Stack
             screenOptions={{
-              // headerTransparent: true,
               headerTintColor: theme.accentColor.val,
               headerStyle: {
                 backgroundColor: theme.color2.val,
               },
-              contentStyle: {
-                backgroundColor: "transparent",
-              },
             }}
           >
-            <Stack.Screen name="(tabs)" />
             <Stack.Screen
-              name="login"
+              name="(tabs)"
               options={{
-                title: "Sign in",
-              }}
-            />
-            <Stack.Screen
-              name="yourEvents"
-              options={{
-                title: "",
-              }}
-            />
-            <Stack.Screen
-              name="eventCreation"
-              options={{
-                title: "",
-              }}
-            />
-            <Stack.Screen
-              name="joinEvent"
-              options={{
-                title: "",
-              }}
-            />
-            <Stack.Screen
-              name="eventPage"
-              options={{
-                title: "",
+                title: "Home",
+                headerShown: false,
+                contentStyle: {
+                  paddingTop: safeAreaInsets.top,
+                  backgroundColor: theme.background.val,
+                },
               }}
             />
           </Stack>
