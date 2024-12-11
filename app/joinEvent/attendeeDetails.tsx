@@ -42,6 +42,11 @@ export default function AttendeeDetails() {
         pathname: "/eventPage/[id]",
         params: { id: id },
       });
+      showToastable({
+        message: "Mark your calendar! Registration successful!",
+        duration: 2000,
+        status: "success",
+      });
     } catch {
       showToastable({
         message: "Error adding you to the event",

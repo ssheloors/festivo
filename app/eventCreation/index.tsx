@@ -53,6 +53,11 @@ export default function EventCreation() {
         ...data,
         organizer: user.id,
       });
+      showToastable({
+        message: "Hooray! Event created successfully",
+        duration: 2000,
+        status: "success",
+      });
       router.push("/yourEvents");
     } catch {
       showToastable({
