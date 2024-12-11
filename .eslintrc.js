@@ -30,6 +30,13 @@ module.exports = {
         groups: ["type", "builtin", "external", "parent", "sibling", "index"],
         "newlines-between": "always",
         alphabetize: { order: "asc" },
+        pathGroups: [
+          {
+            pattern: "@/test-utils",
+            group: "builtin",
+            position: "before",
+          },
+        ],
       },
     ],
     "no-console": "error",
@@ -55,7 +62,7 @@ module.exports = {
   overrides: [
     {
       // Allow Expo routes to use default exports
-      files: ["app/**/*.{js,jsx,ts,tsx}"],
+      files: ["app/**/*.{js,jsx,ts,tsx}", "**/__mocks__/**/*"],
       rules: {
         "import/no-default-export": "off",
       },

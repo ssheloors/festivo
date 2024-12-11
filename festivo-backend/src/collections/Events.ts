@@ -48,9 +48,9 @@ export const Events: CollectionConfig = {
     },
     {
       name: 'attendees',
-      type: 'relationship',
-      relationTo: 'attendee',
-      hasMany: true,
+      type: 'join',
+      collection: 'attendee',
+      on: 'event',
     },
   ],
   hooks: {

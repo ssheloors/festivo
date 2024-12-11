@@ -1,31 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
-import { useEffect, useRef } from "react";
+import { useContext } from "react";
 
-import { useStorage } from "./use-storage";
-
-import { createPayloadClient } from "@/utils/payload-client";
+import { PayloadClientContext } from "@/components/PayloadClientProvider";
 
 export function usePayload() {
-  const payloadRef = useRef(createPayloadClient());
+  const client = useContext(PayloadClientContext);
 
-  const storage = useStorage();
+  if (client == null) {
+    throw new Error("usePayload must be used within a PayloadClientProvider");
+  }
 
-  const tokenQuery = useQuery({
-    queryKey: ["user-token"],
-    queryFn: () => storage.getString("payload-token"),
-  });
-
-  useEffect(() => {
-    const token = tokenQuery.data;
-
-    payloadRef.current = createPayloadClient({
-      headers: token
-        ? {
-            Authorization: `JWT ${token}`,
-          }
-        : undefined,
-    });
-  }, [tokenQuery.data]);
-
-  return payloadRef.current;
+  return client;
 }

@@ -1,27 +1,24 @@
 import { Link, useLocalSearchParams } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { ScrollView, SizableText, Text, View, XStack, YStack } from "tamagui";
 
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { IconSymbol } from "@/components/ui/IconSymbol";
+import { useAttendance } from "@/hooks/use-attendance";
 import { useEventById } from "@/hooks/use-event";
-import { useStorage } from "@/hooks/use-storage";
 import { useUser } from "@/hooks/use-user";
 
 export default function EventPage() {
   const { id } = useLocalSearchParams();
-  const { data: events } = useEventById(Number(id));
+  const { data: event } = useEventById(Number(id));
   const { data: user } = useUser();
-  const event = events?.docs[0];
 
-  const storage = useStorage();
-  const [joinStatus, setJoinStatus] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (event) {
-      storage.getString(event.eventCode).then(setJoinStatus);
-    }
-  }, [event, storage]);
+  const attendance = useAttendance(typeof id === "string" ? id : id[0]);
+  const userOwnsEvent =
+    user != null &&
+    typeof event?.organizer !== "number" &&
+    user?.id === event?.organizer.id;
+  const hasJoined = attendance.data != null;
 
   if (!event) {
     return <Text>Loading...</Text>;
@@ -43,12 +40,13 @@ export default function EventPage() {
         <YStack padding="$4" gap="$3">
           <XStack>
             <SizableText size="$10">{event.title}</SizableText>
-            {joinStatus === "joined" && (
+            {hasJoined && (
               <SizableText
                 size="$4"
                 alignContent="center"
                 marginLeft="$6"
                 color="green" // TODO: Improve styling of this text
+                testID="joined-message"
               >
                 Registered!
               </SizableText>
@@ -80,10 +78,10 @@ export default function EventPage() {
           )}
           <SizableText size="$8">Details:</SizableText>
           <SizableText size="$4">{event.description}</SizableText>
-          {event.attendees && event.attendees.length > 0 && (
+          {event.attendees?.docs && event.attendees.docs?.length > 0 && (
             <>
               <SizableText size="$8">Attendees:</SizableText>
-              {event.attendees.map(
+              {event.attendees.docs.map(
                 (attendee) =>
                   typeof attendee !== "number" && (
                     <SizableText key={attendee.id}>{attendee.name}</SizableText>
@@ -93,20 +91,29 @@ export default function EventPage() {
           )}
         </YStack>
       </ScrollView>
-      {joinStatus !== "joined" &&
-        typeof event.organizer !== "number" &&
-        user?.id === event.organizer.id && (
+      {userOwnsEvent ? (
+        <FloatingActionButton
+          iconAfter={
+            <IconSymbol name="square.and.pencil" size={24} color="$color8" />
+          }
+          testID="edit-button"
+        >
+          Edit Event
+        </FloatingActionButton>
+      ) : !attendance.isPending ? (
+        hasJoined ? (
           <FloatingActionButton
-            iconAfter={
-              <IconSymbol name="square.and.pencil" size={24} color="$color8" />
-            }
+            iconAfter={<IconSymbol name="cross" size={24} color="white" />}
+            // TODO: implement cancel attendance
+            // onPress={() => {
+            //   })
+            // }
+            color="accent" // I like white for the text color, let's look into it
+            testID="cancel-button"
           >
-            Edit Event
+            Cancel attendance
           </FloatingActionButton>
-        )}
-      {joinStatus !== "joined" &&
-        typeof event.organizer !== "number" &&
-        user?.id !== event.organizer.id && (
+        ) : (
           <Link
             push
             href={{
@@ -114,6 +121,7 @@ export default function EventPage() {
               params: { code: event.eventCode, id: event.id },
             }}
             asChild
+            testID="join-button"
           >
             <FloatingActionButton
               iconAfter={
@@ -124,21 +132,8 @@ export default function EventPage() {
               Join event
             </FloatingActionButton>
           </Link>
-        )}
-      {joinStatus === "joined" &&
-        typeof event.organizer !== "number" &&
-        user?.id !== event.organizer.id && (
-          <FloatingActionButton
-            iconAfter={<IconSymbol name="cross" size={24} color="white" />}
-            // TODO: implement cancel attendance
-            // onPress={() => {
-            //   })
-            // }
-            color="accent" // I like white for the text color, let's look into it
-          >
-            Cancel attendance
-          </FloatingActionButton>
-        )}
+        )
+      ) : null}
     </View>
   );
 }

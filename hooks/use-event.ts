@@ -7,10 +7,13 @@ export function useEventById(eventId: number) {
 
   return useQuery({
     queryKey: ["events", eventId],
-    queryFn: () =>
-      payload.collections.event.find({
+    queryFn: async () => {
+      const { docs } = await payload.collections.event.find({
         where: { id: { equals: eventId } },
         depth: 10,
-      }),
+      });
+
+      return docs[0];
+    },
   });
 }

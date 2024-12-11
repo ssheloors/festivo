@@ -1,17 +1,17 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+export const memoryStorage = new Map<string, string>();
 
-export function useStorage() {
+export const useStorage = jest.fn().mockImplementation(() => {
   return {
     async getString(key: string) {
-      return AsyncStorage.getItem(key);
+      return memoryStorage.get(key) ?? null;
     },
 
     async setString(key: string, value: string) {
-      return AsyncStorage.setItem(key, value);
+      memoryStorage.set(key, value);
     },
 
     async getKeys() {
-      return AsyncStorage.getAllKeys();
+      return [...memoryStorage.keys()];
     },
 
     async getObject(key: string) {
@@ -24,4 +24,4 @@ export function useStorage() {
       return this.setString(key, JSON.stringify(value));
     },
   };
-}
+});
