@@ -1,12 +1,44 @@
 import { Link, useLocalSearchParams } from "expo-router";
-import React from "react";
+import React, { ReactNode } from "react";
 import { ScrollView, SizableText, Text, View, XStack, YStack } from "tamagui";
 
+import { ChipData, Chips } from "@/components/Chips";
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { useAttendance } from "@/hooks/use-attendance";
 import { useEventById } from "@/hooks/use-event";
 import { useUser } from "@/hooks/use-user";
+
+function DataContainer({ children }: { children: ReactNode }) {
+  return (
+    <YStack
+      paddingInline="$4"
+      paddingBlock="$4"
+      backgroundColor="$color2"
+      borderRadius="$radius.true"
+      gap="$3"
+    >
+      {children}
+    </YStack>
+  );
+}
+
+function DataField({
+  icon,
+  children,
+}: {
+  icon: ReactNode;
+  children: ReactNode;
+}) {
+  return (
+    <XStack alignItems="center" gap="$3">
+      <View flex={0}>{icon}</View>
+      <SizableText flex={1} color="$color8">
+        {children}
+      </SizableText>
+    </XStack>
+  );
+}
 
 export default function EventPage() {
   const { id } = useLocalSearchParams();
@@ -34,53 +66,60 @@ export default function EventPage() {
     hour12: false,
   }).format();
 
+  const chips: ChipData[] = [
+    { text: `Event code: ${event.eventCode}`, theme: "alt1" },
+  ];
+  if (hasJoined) chips.push({ text: "Registered", theme: "accent" });
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView>
         <YStack padding="$4" gap="$3">
-          <XStack>
-            <SizableText size="$10">{event.title}</SizableText>
-            {hasJoined && (
-              <SizableText
-                size="$4"
-                alignContent="center"
-                marginLeft="$6"
-                color="green" // TODO: Improve styling of this text
-                testID="joined-message"
-              >
-                Registered!
-              </SizableText>
-            )}
-          </XStack>
-          <SizableText size="$4">{event.eventCode}</SizableText>
-          <SizableText size="$4">
-            <XStack gap="$2">
-              <IconSymbol name="calendar" size={24} color="$color8" />
-              <Text>{formattedDate}</Text>
-            </XStack>
+          <SizableText size="$9" fontWeight="bold" textWrap="wrap">
+            {event.title}
           </SizableText>
-          <SizableText size="$4">
-            <XStack gap="$2">
-              <IconSymbol name="mappin.and.ellipse" size={24} color="$color8" />
-              <Text>{event.address}</Text>
-            </XStack>
-          </SizableText>
-          {typeof event.organizer !== "number" && (
-            <>
-              <SizableText size="$8">Organizer:</SizableText>
-              <SizableText>
-                <XStack gap="$2">
+          <Chips chips={chips} />
+
+          <DataContainer>
+            <DataField
+              icon={<IconSymbol name="calendar" size={24} color="$color8" />}
+            >
+              {formattedDate}
+            </DataField>
+            <DataField
+              icon={
+                <IconSymbol
+                  name="mappin.and.ellipse"
+                  size={24}
+                  color="$color8"
+                />
+              }
+            >
+              {event.address}
+            </DataField>
+
+            {typeof event.organizer !== "number" && (
+              <DataField
+                icon={
                   <IconSymbol name="person.fill" size={24} color="$color8" />
-                  <Text>{event.organizer.name}</Text>
-                </XStack>
-              </SizableText>
-            </>
-          )}
-          <SizableText size="$8">Details:</SizableText>
-          <SizableText size="$4">{event.description}</SizableText>
+                }
+              >
+                {event.organizer.name}
+              </DataField>
+            )}
+          </DataContainer>
+
+          <SizableText size="$7" fontWeight="bold" textWrap="wrap">
+            About this event
+          </SizableText>
+          <SizableText size="$4" color="$color8">
+            {event.description}
+          </SizableText>
           {event.attendees?.docs && event.attendees.docs?.length > 0 && (
             <>
-              <SizableText size="$8">Attendees:</SizableText>
+              <SizableText size="$7" fontWeight="bold" textWrap="wrap">
+                Attendees
+              </SizableText>
               {event.attendees.docs.map(
                 (attendee) =>
                   typeof attendee !== "number" && (
@@ -117,7 +156,7 @@ export default function EventPage() {
           <Link
             push
             href={{
-              pathname: "/joinEvent/attendeeDetails",
+              pathname: `/event/[id]/join`,
               params: { code: event.eventCode, id: event.id },
             }}
             asChild

@@ -20,7 +20,7 @@ export default function Events() {
           <Link
             key={event.id}
             href={{
-              pathname: "/eventPage/[id]",
+              pathname: "/event/[id]",
               params: { id: event.id },
             }}
           >
