@@ -3,6 +3,7 @@ import { useRouter, useLocalSearchParams } from "expo-router";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { KeyboardAvoidingView, Platform } from "react-native";
+import { showToastable } from "react-native-toastable";
 import { ScrollView, SizableText, Spinner, YStack } from "tamagui";
 import { z } from "zod";
 
@@ -10,7 +11,6 @@ import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { FormField } from "@/components/FormField";
 import { TextArea } from "@/components/Input";
 import { useAddAttendeeToEvent } from "@/hooks/use-add-attendee-to-event";
-import { showToastable } from "react-native-toastable";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -42,11 +42,11 @@ export default function AttendeeDetails() {
         pathname: "/eventPage/[id]",
         params: { id: id },
       });
-    } catch (error) {
+    } catch {
       showToastable({
-        message: "Error adding you to the event" + error,
+        message: "Error adding you to the event",
         duration: 2000,
-        status: "success",
+        status: "warning",
       });
     }
   });

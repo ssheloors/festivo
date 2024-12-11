@@ -67,11 +67,12 @@ export default function EventCreation() {
           });
         } else {
           const eventId = response.data?.docs[0].id;
-        if (eventId !== undefined) {
-          router.push({
-            pathname: "/eventPage/[id]",
-            params: { id: eventId },
-          });
+          if (eventId !== undefined) {
+            router.push({
+              pathname: "/eventPage/[id]",
+              params: { id: eventId },
+            });
+          }
         }
       });
     } else {

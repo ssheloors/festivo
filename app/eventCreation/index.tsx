@@ -9,6 +9,7 @@ import {
   Pressable,
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { showToastable } from "react-native-toastable";
 import { YStack, SizableText, XStack, ScrollView } from "tamagui";
 
 import { IconSymbol } from "../../components/ui/IconSymbol";
@@ -19,7 +20,6 @@ import { FormField } from "@/components/FormField";
 import { TextArea } from "@/components/Input";
 import { useEventCreation } from "@/hooks/use-event-creation";
 import { useUser } from "@/hooks/use-user";
-import { showToastable } from "react-native-toastable";
 
 export default function EventCreation() {
   const form = useForm({
@@ -54,12 +54,12 @@ export default function EventCreation() {
         organizer: user.id,
       });
       router.push("/yourEvents");
-    } catch (error) {
-      alert(
-        error instanceof Error
-          ? error.message
-          : "You are not allowed to perform this action.",
-      );
+    } catch {
+      showToastable({
+        message: "Error creating event",
+        duration: 2000,
+        status: "warning",
+      });
     }
   });
 
