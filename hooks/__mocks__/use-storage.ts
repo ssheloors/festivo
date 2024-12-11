@@ -10,6 +10,10 @@ export const useStorage = jest.fn().mockImplementation(() => {
       memoryStorage.set(key, value);
     },
 
+    async getKeys() {
+      return [...memoryStorage.keys()];
+    },
+
     async getObject(key: string) {
       const json = await this.getString(key);
       if (!json) return null;
