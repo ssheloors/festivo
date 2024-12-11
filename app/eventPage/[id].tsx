@@ -23,7 +23,6 @@ export default function EventPage() {
   if (!event) {
     return <Text>Loading...</Text>;
   }
-  console.log(event);
 
   const formattedDate = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
@@ -86,7 +85,7 @@ export default function EventPage() {
                 (attendee) =>
                   typeof attendee !== "number" && (
                     <SizableText key={attendee.id}>{attendee.name}</SizableText>
-                  )
+                  ),
               )}
             </>
           )}
