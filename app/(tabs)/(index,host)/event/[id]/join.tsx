@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { showToastable } from "react-native-toastable";
 import { Spinner, YStack } from "tamagui";
 import { z } from "zod";
 
@@ -34,9 +35,18 @@ export default function AttendeeDetails() {
   const onSubmit = form.handleSubmit(async () => {
     try {
       await addAttendeeMutation.mutateAsync(form.getValues());
+      showToastable({
+        message: "Mark your calendar! Registration successful!",
+        duration: 2000,
+        status: "success",
+      });
       router.dismiss();
-    } catch (error) {
-      alert("Error adding you to the event" + error);
+    } catch {
+      showToastable({
+        message: "Error adding you to the event",
+        duration: 2000,
+        status: "warning",
+      });
     }
   });
 

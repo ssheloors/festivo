@@ -2,6 +2,7 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { showToastable } from "react-native-toastable";
 import { YStack, SizableText, XStack } from "tamagui";
 
 import { IconSymbol } from "../../../../components/ui/IconSymbol";
@@ -32,7 +33,11 @@ export default function EventCreation() {
 
   const onSubmit = form.handleSubmit(async ({ eventDate, ...data }) => {
     if (!user) {
-      alert("You must be logged in to create an event.");
+      showToastable({
+        message: "You must be logged in to create an event",
+        duration: 2000,
+        status: "success",
+      });
       return;
     }
 
@@ -42,16 +47,21 @@ export default function EventCreation() {
         ...data,
         organizer: user.id,
       });
+      showToastable({
+        message: "Hooray! Event created successfully",
+        duration: 2000,
+        status: "success",
+      });
       router.replace({
         pathname: "/event/[id]",
         params: { id: createdEvent.doc.id },
       });
-    } catch (error) {
-      alert(
-        error instanceof Error
-          ? error.message
-          : "You are not allowed to perform this action.",
-      );
+    } catch {
+      showToastable({
+        message: "Error creating event",
+        duration: 2000,
+        status: "warning",
+      });
     }
   });
 

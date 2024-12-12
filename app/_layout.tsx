@@ -4,12 +4,12 @@ import { Stack } from "expo-router";
 import * as SystemUI from "expo-system-ui";
 import { useEffect, useMemo } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Toastable from "react-native-toastable";
 import { TamaguiProvider } from "tamagui";
 
 import { PayloadClientProvider } from "@/components/PayloadClientProvider";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import tamaguiConfig from "@/tamagui.config";
-
 const queryClient = new QueryClient();
 
 export default function RootLayout() {
@@ -42,7 +42,16 @@ export default function RootLayout() {
       <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme}>
         <QueryClientProvider client={queryClient}>
           <PayloadClientProvider>
-            <Stack
+            <Toastable
+            position="top"
+            statusMap={{
+              success: theme.accentColor.val,
+              danger: theme.accentColor.val,
+              warning: theme.accentColor.val,
+              info: theme.accentColor.val,
+            }}
+          />
+          <Stack
               screenOptions={{
                 headerTintColor: theme.accentColor.val,
                 headerStyle: {

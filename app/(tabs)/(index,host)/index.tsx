@@ -8,6 +8,7 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
+import { showToastable } from "react-native-toastable";
 import { SizableText, YStack, XStack, styled, Text } from "tamagui";
 
 import { Button } from "@/components/Button";
@@ -60,7 +61,11 @@ export default function EventCreation() {
   const onSubmit = () => {
     refetch().then((response) => {
       if (response.data?.docs.length === 0) {
-        alert("Event not found");
+        showToastable({
+          message: "Whoops! Event not found",
+          duration: 2000,
+          status: "success",
+        });
       } else {
         const eventId = response.data?.docs[0].id;
         if (eventId !== undefined) {
