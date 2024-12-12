@@ -28,6 +28,11 @@ const mockedRouter = jest.mocked(expoRouter);
 mockedRouter.useLocalSearchParams.mockImplementation(() => mockedRouterParams);
 mockedRouter.Link = jest.requireActual("expo-router").Link;
 
+jest.mock("@react-navigation/bottom-tabs", () => ({
+  ...jest.requireActual("@react-navigation/bottom-tabs"),
+  useBottomTabBarHeight: () => 0,
+}));
+
 jest.mock("./hooks/use-storage.ts");
 jest.mock("./hooks/use-user.ts");
 

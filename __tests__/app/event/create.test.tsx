@@ -6,7 +6,7 @@ import {
   waitFor,
 } from "@/test-utils";
 
-import EventCreationPage from "../../../app/event/create";
+import EventCreationPage from "../../../app/(tabs)/(index,host)/event/create";
 import { user } from "../../../hooks/__mocks__/use-user";
 
 it(`submits inputted values`, async () => {

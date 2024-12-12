@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Keyboard, KeyboardAvoidingView, Platform } from "react-native";
+import { Keyboard, TouchableOpacity } from "react-native";
 import {
   CodeField,
   Cursor,
@@ -11,6 +11,8 @@ import {
 import { SizableText, YStack, XStack, styled, Text } from "tamagui";
 
 import { Button } from "@/components/Button";
+import { CustomContainer } from "@/components/CustomContainer";
+import { useAllAttendance } from "@/hooks/use-attendance";
 import { usePayload } from "@/hooks/use-payload";
 
 const Cell = styled(Text, {
@@ -71,22 +73,15 @@ export default function EventCreation() {
     });
   };
 
+  const attendance = useAllAttendance();
+
   return (
-    <KeyboardAvoidingView
-      keyboardVerticalOffset={Platform.select({ ios: 0, android: 0 })}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={{
-        flex: 1,
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <CustomContainer>
       <YStack
         padding="$4"
         gap="$4"
         flex={1}
         justifyContent="center"
-        paddingBottom="$14"
         onPress={Keyboard.dismiss}
       >
         <SizableText size="$9" fontWeight="bold" textAlign="center">
@@ -116,11 +111,21 @@ export default function EventCreation() {
             onPress={onSubmit}
             minWidth="$10"
             disabled={value.length !== CELL_COUNT}
+            borderRadius="$radius.12"
           >
             Join
           </Button>
         </XStack>
+        {attendance.data && attendance.data.length > 0 && (
+          <Link href="/(tabs)/(index)/joined-events" asChild>
+            <TouchableOpacity>
+              <SizableText color="$accentColor" textAlign="center">
+                Attending {attendance.data.length} events
+              </SizableText>
+            </TouchableOpacity>
+          </Link>
+        )}
       </YStack>
-    </KeyboardAvoidingView>
+    </CustomContainer>
   );
 }

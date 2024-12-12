@@ -8,7 +8,7 @@ import {
   waitFor,
 } from "@/test-utils";
 
-import AttendeeDetailsPage from "../../../app/event/[id]/join";
+import AttendeeDetailsPage from "../../../app/(tabs)/(index,host)/event/[id]/join";
 
 it(`submits inputted values`, async () => {
   const event = {
