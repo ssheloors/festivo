@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
+import { showToastable } from "react-native-toastable";
 
 import { useAddAttendance } from "./use-attendance";
 import { usePayload } from "./use-payload";
@@ -45,8 +46,12 @@ export function useAddAttendeeToEvent(code: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["attendees"] });
     },
-    onError: (error) => {
-      alert("Error adding you to the event" + error);
+    onError: () => {
+      showToastable({
+        message: "Error adding you to the event",
+        duration: 2000,
+        status: "warning",
+      });
     },
   });
 

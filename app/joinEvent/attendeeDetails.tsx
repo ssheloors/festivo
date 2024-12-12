@@ -3,6 +3,7 @@ import { useRouter, useLocalSearchParams } from "expo-router";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { KeyboardAvoidingView, Platform } from "react-native";
+import { showToastable } from "react-native-toastable";
 import { ScrollView, SizableText, Spinner, YStack } from "tamagui";
 import { z } from "zod";
 
@@ -41,8 +42,17 @@ export default function AttendeeDetails() {
         pathname: "/eventPage/[id]",
         params: { id: id },
       });
-    } catch (error) {
-      alert("Error adding you to the event" + error);
+      showToastable({
+        message: "Mark your calendar! Registration successful!",
+        duration: 2000,
+        status: "success",
+      });
+    } catch {
+      showToastable({
+        message: "Error adding you to the event",
+        duration: 2000,
+        status: "warning",
+      });
     }
   });
 
