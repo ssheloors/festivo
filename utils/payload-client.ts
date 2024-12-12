@@ -26,7 +26,8 @@ type Verbs =
   | "createDraft";
 
 export const payloadApiUrl =
-  process.env.PAYLOAD_API_URL ?? "http://localhost:3000/api";
+  process.env.EXPO_PUBLIC_PAYLOAD_API_URL ?? "http://localhost:3000/api";
+console.log(payloadApiUrl);
 
 export function createPayloadClient(
   options: Partial<FetchOptions> = {},
