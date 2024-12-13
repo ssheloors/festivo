@@ -17,7 +17,7 @@ export function EventCard({
         pressTheme
         title={event.title}
         subTitle={
-          typeof event.organizer === "number" ? null : event.organizer.name
+          typeof event.organizer === "string" ? null : event.organizer.name
         }
         iconAfter={<IconSymbol name="chevron.right" color="$color12" />}
       />

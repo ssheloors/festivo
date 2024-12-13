@@ -17,7 +17,7 @@ export function useEventsFromAttendee(
       return events.filter((event) =>
         event.attendees?.docs?.find((attendee) =>
           attendeeIds.includes(
-            typeof attendee === "number" ? attendee : attendee.id,
+            typeof attendee === "string" ? attendee : attendee.id,
           ),
         ),
       );

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { usePayload } from "./use-payload";
 
-export function useEventById(eventId: number) {
+export function useEventById(eventId: string) {
   const payload = usePayload();
 
   return useQuery({

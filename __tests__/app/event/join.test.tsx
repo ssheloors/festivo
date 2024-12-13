@@ -22,7 +22,7 @@ it(`submits inputted values`, async () => {
     Promise.resolve({ docs: [event] }),
   );
   const attendee = {
-    id: 999,
+    id: "999",
   };
   const attendeeCreateFn =
     payloadTestClient.collections.attendee.create.mockReturnValue({

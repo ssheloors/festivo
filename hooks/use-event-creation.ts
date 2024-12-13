@@ -12,7 +12,7 @@ export function useEventCreation() {
       address: string;
       description?: string;
       eventDate: string;
-      organizer: number;
+      organizer: string;
     }) => {
       return payload.collections.event.create({
         doc: {

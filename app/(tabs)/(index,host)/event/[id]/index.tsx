@@ -42,14 +42,15 @@ function DataField({
 }
 
 export default function EventPage() {
-  const { id } = useLocalSearchParams();
-  const { data: event } = useEventById(Number(id));
+  const params = useLocalSearchParams();
+  const id = Array.isArray(params.id) ? params.id[0] : params.id;
+  const { data: event } = useEventById(id);
   const { data: user } = useUser();
 
-  const attendance = useAttendance(typeof id === "string" ? id : id[0]);
+  const attendance = useAttendance(id);
   const userOwnsEvent =
     user != null &&
-    typeof event?.organizer !== "number" &&
+    typeof event?.organizer !== "string" &&
     user?.id === event?.organizer.id;
   const hasJoined = attendance.data != null;
 
@@ -142,7 +143,7 @@ export default function EventPage() {
             {event.address}
           </DataField>
 
-          {typeof event.organizer !== "number" && (
+          {typeof event.organizer !== "string" && (
             <DataField
               icon={<IconSymbol name="person.fill" size={24} color="$color8" />}
             >
@@ -164,7 +165,7 @@ export default function EventPage() {
             </SizableText>
             {event.attendees.docs.map(
               (attendee) =>
-                typeof attendee !== "number" && (
+                typeof attendee !== "string" && (
                   <SizableText key={attendee.id}>{attendee.name}</SizableText>
                 ),
             )}

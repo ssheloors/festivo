@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useRouter } from "expo-router";
 import React, { useState } from "react";
-import { Keyboard, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import {
   CodeField,
   Cursor,
@@ -81,13 +81,13 @@ export default function EventCreation() {
   const attendance = useAllAttendance();
 
   return (
-    <CustomContainer>
+    <CustomContainer scroll>
       <YStack
         padding="$4"
+        paddingTop={250}
         gap="$4"
         flex={1}
         justifyContent="center"
-        onPress={Keyboard.dismiss}
       >
         <SizableText size="$9" fontWeight="bold" textAlign="center">
           Join an event

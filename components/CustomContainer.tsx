@@ -16,7 +16,7 @@ export function CustomContainer({
 
   return (
     <KeyboardAvoidingView
-      keyboardVerticalOffset={Platform.select({ ios: 0, android: 500 })}
+      // keyboardVerticalOffset={Platform.select({ ios: 0, android: 500 })}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{
         flex: 1,

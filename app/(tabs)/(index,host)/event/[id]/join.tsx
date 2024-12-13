@@ -19,9 +19,10 @@ const formSchema = z.object({
 });
 
 export default function AttendeeDetails() {
-  const { id } = useLocalSearchParams() as { id: string };
+  const params = useLocalSearchParams();
+  const id = Array.isArray(params.id) ? params.id[0] : params.id;
   const router = useRouter();
-  const addAttendeeMutation = useAddAttendeeToEvent(Number(id));
+  const addAttendeeMutation = useAddAttendeeToEvent(id);
 
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {

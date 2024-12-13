@@ -5,7 +5,7 @@ import { showToastable } from "react-native-toastable";
 import { useAddAttendance } from "./use-attendance";
 import { usePayload } from "./use-payload";
 
-export function useAddAttendeeToEvent(eventId: number) {
+export function useAddAttendeeToEvent(eventId: string) {
   const payload = usePayload();
   const queryClient = useQueryClient();
 
