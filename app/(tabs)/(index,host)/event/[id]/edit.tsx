@@ -2,6 +2,7 @@ import { useRouter, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { showToastable } from "react-native-toastable";
 import { YStack, SizableText, XStack } from "tamagui";
 
 import { Button } from "@/components/Button";
@@ -17,7 +18,7 @@ import { useUser } from "@/hooks/use-user";
 export default function EditEvent() {
   const params = useLocalSearchParams();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
-  const { data: event } = useEventById(Number(id));
+  const { data: event } = useEventById(id);
   const { data: user, isLoading } = useUser();
   const updateEvent = useEventUpdate();
   const router = useRouter();
@@ -63,25 +64,33 @@ export default function EditEvent() {
 
   const onSubmit = form.handleSubmit(async ({ eventDate, ...data }) => {
     if (!user) {
-      alert("You must be logged in to edit an event.");
-      return;
+      showToastable({
+        message: "You must be logged in to create an event",
+        duration: 2000,
+        status: "success",
+      });
     }
     try {
       await updateEvent.mutateAsync({
-        id: Number(id),
+        id: id,
         eventDate: eventDate.toUTCString(),
         ...data,
+      });
+      showToastable({
+        message: "Event edited successfully",
+        duration: 2000,
+        status: "success",
       });
       router.replace({
         pathname: `/event/[id]`,
         params: { id },
       });
-    } catch (error) {
-      alert(
-        error instanceof Error
-          ? error.message
-          : "You are not allowed to perform this action.",
-      );
+    } catch {
+      showToastable({
+        message: "Error editing event",
+        duration: 2000,
+        status: "warning",
+      });
     }
   });
 
