@@ -4,7 +4,7 @@ import { Button } from "./Button";
 
 export const FloatingActionButton = styled(Button, {
   theme: "accent",
-  bottom: "$10",
+  bottom: "$13",
   left: 0,
   right: 0,
   margin: "auto",

@@ -8,7 +8,7 @@ function makeKey(eventId: number | string) {
   return `event-attendance-${eventId}`;
 }
 
-export function useAttendance(eventId: number | string) {
+export function useAttendance(eventId: string) {
   const storage = useStorage();
 
   const key = makeKey(eventId);
@@ -31,7 +31,7 @@ export function useAddAttendance() {
       eventId,
       attendee,
     }: {
-      eventId: number | string;
+      eventId: string;
       attendee: PayloadConfig["collections"]["attendee"];
     }) => {
       const key = makeKey(eventId);

@@ -6,7 +6,7 @@ import {
 import { PayloadConfig } from "@/utils/payload-client";
 
 export const user: PayloadConfig["collections"]["users"] = {
-  id: 99,
+  id: "99",
   name: "Test User",
   email: "test@example.com",
   createdAt: new Date().toISOString(),

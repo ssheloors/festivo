@@ -30,22 +30,22 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="(index)"
         options={{
-          title: "Home",
+          title: "Join Event",
           tabBarIcon: ({ color }) => (
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            <IconSymbol size={28} name="house.fill" color={color as any} />
+            <IconSymbol size={28} name="person.2.fill" color={color as any} />
           ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="(host)"
         options={{
-          title: "Explore",
+          title: "Host",
           tabBarIcon: ({ color }) => (
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            <IconSymbol size={28} name="paperplane.fill" color={color as any} />
+            <IconSymbol size={28} name="calendar" color={color as any} />
           ),
         }}
       />

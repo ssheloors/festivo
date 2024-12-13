@@ -1,7 +1,9 @@
+import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import * as SystemUI from "expo-system-ui";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Toastable from "react-native-toastable";
 import { TamaguiProvider } from "tamagui";
 
@@ -19,65 +21,59 @@ export default function RootLayout() {
     SystemUI.setBackgroundColorAsync(bgColor);
   }, [theme.background]);
 
+  const safeAreaInsets = useSafeAreaInsets();
+
+  const reactNavigationTheme = useMemo(
+    () =>
+      ({
+        ...DefaultTheme,
+        colors: {
+          ...DefaultTheme.colors,
+          background: theme.color1.val,
+          primary: theme.color7.val,
+          text: theme.color7.val,
+        },
+      }) satisfies typeof DefaultTheme,
+    [theme],
+  );
+
   return (
-    <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme}>
-      <QueryClientProvider client={queryClient}>
-        <PayloadClientProvider>
-          <Toastable
-            position="top"
-            statusMap={{
-              success: theme.accentColor.val,
-              danger: theme.accentColor.val,
-              warning: theme.accentColor.val,
-              info: theme.accentColor.val,
-            }}
-          />
-          <Stack
-            screenOptions={{
-              // headerTransparent: true,
-              headerTintColor: theme.accentColor.val,
-              headerStyle: {
-                backgroundColor: theme.color2.val,
-              },
-              contentStyle: {
-                backgroundColor: "transparent",
-              },
-            }}
-          >
-            <Stack.Screen name="(tabs)" />
-            <Stack.Screen
-              name="login"
-              options={{
-                title: "Sign in",
+    <ThemeProvider value={reactNavigationTheme}>
+      <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme}>
+        <QueryClientProvider client={queryClient}>
+          <PayloadClientProvider>
+            <Toastable
+              position="top"
+              statusMap={{
+                success: theme.accentColor.val,
+                danger: theme.accentColor.val,
+                warning: theme.accentColor.val,
+                info: theme.accentColor.val,
               }}
             />
-            <Stack.Screen
-              name="yourEvents"
-              options={{
-                title: "",
+            <Stack
+              screenOptions={{
+                headerTintColor: theme.accentColor.val,
+                headerStyle: {
+                  backgroundColor: theme.color2.val,
+                },
               }}
-            />
-            <Stack.Screen
-              name="eventCreation"
-              options={{
-                title: "",
-              }}
-            />
-            <Stack.Screen
-              name="joinEvent"
-              options={{
-                title: "",
-              }}
-            />
-            <Stack.Screen
-              name="eventPage"
-              options={{
-                title: "",
-              }}
-            />
-          </Stack>
-        </PayloadClientProvider>
-      </QueryClientProvider>
-    </TamaguiProvider>
+            >
+              <Stack.Screen
+                name="(tabs)"
+                options={{
+                  title: "Home",
+                  headerShown: false,
+                  contentStyle: {
+                    paddingTop: safeAreaInsets.top,
+                    backgroundColor: theme.background.val,
+                  },
+                }}
+              />
+            </Stack>
+          </PayloadClientProvider>
+        </QueryClientProvider>
+      </TamaguiProvider>
+    </ThemeProvider>
   );
 }

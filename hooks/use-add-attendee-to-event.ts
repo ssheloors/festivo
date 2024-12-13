@@ -5,7 +5,7 @@ import { showToastable } from "react-native-toastable";
 import { useAddAttendance } from "./use-attendance";
 import { usePayload } from "./use-payload";
 
-export function useAddAttendeeToEvent(code: string) {
+export function useAddAttendeeToEvent(eventId: string) {
   const payload = usePayload();
   const queryClient = useQueryClient();
 
@@ -14,31 +14,20 @@ export function useAddAttendeeToEvent(code: string) {
   // Create a new attendee in the attendees collection
   const addAttendeeMutation = useMutation({
     mutationFn: async (data: {
-      eventId: string;
       name: string;
       email: string;
       comments: string;
     }) => {
-      const {
-        docs: [event],
-      } = await payload.collections.event.find({
-        // find the event first to be able to reference its id when creating the attendee
-        where: {
-          eventCode: {
-            equals: code,
-          },
-        },
-      });
       const attendee = await payload.collections.attendee.create({
         doc: {
           name: data.name,
           email: data.email,
           comments: data.comments,
-          event: event.id,
+          event: eventId,
         },
       });
       await addAttenance.mutateAsync({
-        eventId: event.id,
+        eventId: eventId,
         attendee: attendee.doc,
       });
       return attendee;

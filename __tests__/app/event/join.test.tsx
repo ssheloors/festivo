@@ -8,7 +8,7 @@ import {
   waitFor,
 } from "@/test-utils";
 
-import AttendeeDetailsPage from "../../../app/joinEvent/attendeeDetails";
+import AttendeeDetailsPage from "../../../app/(tabs)/(index,host)/event/[id]/join";
 
 it(`submits inputted values`, async () => {
   const event = {
@@ -22,7 +22,7 @@ it(`submits inputted values`, async () => {
     Promise.resolve({ docs: [event] }),
   );
   const attendee = {
-    id: 999,
+    id: "999",
   };
   const attendeeCreateFn =
     payloadTestClient.collections.attendee.create.mockReturnValue({

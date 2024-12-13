@@ -6,15 +6,15 @@ import {
   setLocalSearchParams,
 } from "@/test-utils";
 
-import EventPage from "../../../app/eventPage/[id]";
+import EventPage from "../../../app/(tabs)/(index,host)/event/[id]";
 
 import { user as mockUser } from "@/hooks/__mocks__/use-user";
 import { PayloadConfig } from "@/utils/payload-client";
 
 const event: PayloadConfig["collections"]["event"] = {
-  id: 99,
+  id: "99",
   title: "foo",
-  organizer: 999,
+  organizer: "999",
   eventCode: "AAABBB",
   eventDate: new Date().toISOString(),
   address: "bar",
