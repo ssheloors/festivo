@@ -7,8 +7,7 @@ import { ChipData, Chips } from "@/components/Chips";
 import { CustomContainer } from "@/components/CustomContainer";
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { IconSymbol } from "@/components/ui/IconSymbol";
-import { useAttendance } from "@/hooks/use-attendance";
-import { useCancelAttendance } from "@/hooks/use-cancel-attendance";
+import { useAttendance, useCancelAttendance } from "@/hooks/use-attendance";
 import { useEventById } from "@/hooks/use-event";
 import { useUser } from "@/hooks/use-user";
 
@@ -89,7 +88,6 @@ export default function EventPage() {
       duration: 2000,
       status: "success",
     });
-    router.push("/(tabs)/(host)");
   };
 
   const cta = userOwnsEvent ? (
@@ -183,7 +181,7 @@ export default function EventPage() {
               (attendee) =>
                 typeof attendee !== "string" && (
                   <SizableText key={attendee.id}>{attendee.name}</SizableText>
-                ),
+                )
             )}
           </>
         )}
