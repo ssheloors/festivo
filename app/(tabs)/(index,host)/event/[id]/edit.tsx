@@ -18,7 +18,7 @@ import { useUser } from "@/hooks/use-user";
 export default function EditEvent() {
   const params = useLocalSearchParams();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
-  const { data: event } = useEventById(id);
+  const { data: event, isFetching } = useEventById(id);
   const { data: user, isLoading } = useUser();
   const updateEvent = useEventUpdate();
   const router = useRouter();
@@ -94,7 +94,7 @@ export default function EditEvent() {
     }
   });
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return <SizableText>Loading...</SizableText>;
   }
 
