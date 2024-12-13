@@ -1,5 +1,6 @@
 import { Link, Stack, useLocalSearchParams } from "expo-router";
 import React, { ReactNode } from "react";
+import { showToastable } from "react-native-toastable";
 import { SizableText, Text, View, XStack, YStack } from "tamagui";
 
 import { ChipData, Chips } from "@/components/Chips";
@@ -7,6 +8,7 @@ import { CustomContainer } from "@/components/CustomContainer";
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { useAttendance } from "@/hooks/use-attendance";
+import { useCancelAttendance } from "@/hooks/use-cancel-attendance";
 import { useEventById } from "@/hooks/use-event";
 import { useUser } from "@/hooks/use-user";
 
@@ -48,6 +50,7 @@ export default function EventPage() {
   const { data: user } = useUser();
 
   const attendance = useAttendance(id);
+  const cancelAttendance = useCancelAttendance(id);
   const userOwnsEvent =
     user != null &&
     typeof event?.organizer !== "string" &&
@@ -79,6 +82,15 @@ export default function EventPage() {
     });
   }
 
+  const submitCancelAttendance = async () => {
+    await cancelAttendance.mutateAsync();
+    showToastable({
+      message: "Attendance cancelled",
+      duration: 2000,
+      status: "success",
+    });
+  };
+
   const cta = userOwnsEvent ? (
     <FloatingActionButton
       iconAfter={<IconSymbol name="square.and.pencil" color="$color12" />}
@@ -90,10 +102,7 @@ export default function EventPage() {
     hasJoined ? (
       <FloatingActionButton
         iconAfter={<IconSymbol name="xmark" color="$color12" />}
-        // TODO: implement cancel attendance
-        // onPress={() => {
-        //   })
-        // }
+        onPress={submitCancelAttendance}
         testID="cancel-button"
       >
         Cancel attendance
@@ -167,7 +176,7 @@ export default function EventPage() {
               (attendee) =>
                 typeof attendee !== "string" && (
                   <SizableText key={attendee.id}>{attendee.name}</SizableText>
-                ),
+                )
             )}
           </>
         )}
