@@ -28,7 +28,7 @@ export default function HostPage() {
       if (!user.isFetching && user.data == null) {
         router.replace("/login");
       }
-    }, [user.data, user.isFetching])
+    }, [user.data, user.isFetching]),
   );
 
   const signOut = useSignOut();
