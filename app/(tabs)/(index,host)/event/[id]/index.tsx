@@ -1,4 +1,4 @@
-import { Link, Stack, useLocalSearchParams } from "expo-router";
+import { Link, Stack, useLocalSearchParams, router } from "expo-router";
 import React, { ReactNode } from "react";
 import { SizableText, Text, View, XStack, YStack } from "tamagui";
 
@@ -82,6 +82,12 @@ export default function EventPage() {
   const cta = userOwnsEvent ? (
     <FloatingActionButton
       iconAfter={<IconSymbol name="square.and.pencil" color="$color12" />}
+      onPress={() => {
+        router.push({
+          pathname: `/event/[id]/edit`,
+          params: { id: event.id },
+        });
+      }}
       testID="edit-button"
     >
       Edit Event
