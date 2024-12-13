@@ -1,4 +1,4 @@
-import { Link, Stack, useLocalSearchParams } from "expo-router";
+import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
 import React, { ReactNode } from "react";
 import { showToastable } from "react-native-toastable";
 import { SizableText, Text, View, XStack, YStack } from "tamagui";
@@ -48,6 +48,7 @@ export default function EventPage() {
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
   const { data: event } = useEventById(id);
   const { data: user } = useUser();
+  const router = useRouter();
 
   const attendance = useAttendance(id);
   const cancelAttendance = useCancelAttendance(id);
@@ -89,6 +90,7 @@ export default function EventPage() {
       duration: 2000,
       status: "success",
     });
+    router.push("/(tabs)/(host)");
   };
 
   const cta = userOwnsEvent ? (
