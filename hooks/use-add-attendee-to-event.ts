@@ -35,6 +35,7 @@ export function useAddAttendeeToEvent(eventId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["attendees"] });
       queryClient.invalidateQueries({ queryKey: ["events", eventId] });
+      queryClient.invalidateQueries({ queryKey: ["attendance"] });
     },
     onError: () => {
       showToastable({

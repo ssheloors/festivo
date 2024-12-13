@@ -85,6 +85,7 @@ export function useCancelAttendance(eventId: string) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [key] });
       queryClient.invalidateQueries({ queryKey: ["events", eventId] });
+      queryClient.invalidateQueries({ queryKey: ["attendance"] });
     },
   });
 }
