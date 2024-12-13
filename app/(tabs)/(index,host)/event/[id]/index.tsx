@@ -178,7 +178,7 @@ export default function EventPage() {
               (attendee) =>
                 typeof attendee !== "string" && (
                   <SizableText key={attendee.id}>{attendee.name}</SizableText>
-                )
+                ),
             )}
           </>
         )}

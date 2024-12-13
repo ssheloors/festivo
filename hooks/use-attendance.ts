@@ -49,13 +49,13 @@ export function useAllAttendance() {
     queryKey: ["attendance"],
     queryFn: async () => {
       const keys = (await storage.getKeys()).filter((key) =>
-        key.startsWith(baseKey)
+        key.startsWith(baseKey),
       );
       return Promise.all(
         keys.map(async (key) => {
           const obj = await storage.getObject(key);
           return obj as PayloadConfig["collections"]["attendee"];
-        })
+        }),
       );
     },
   });
