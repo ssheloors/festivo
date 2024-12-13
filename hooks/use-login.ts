@@ -12,6 +12,10 @@ const authenticationResponseSchema = z.object({
   exp: z.number(),
 });
 
+const errorResponseSchema = z.object({
+  errors: z.array(z.object({ message: z.string() })),
+});
+
 export function useLogin() {
   const storage = useStorage();
 
@@ -29,9 +33,16 @@ export function useLogin() {
         body: JSON.stringify(data),
       });
       const responseData = await req.json();
-      const { token } = authenticationResponseSchema.parse(responseData);
+      let payloadToken;
+      try {
+        const { token } = authenticationResponseSchema.parse(responseData);
+        payloadToken = token;
+      } catch {
+        const { errors } = errorResponseSchema.parse(responseData);
+        throw new Error(errors[0].message);
+      }
 
-      await storage.setString("payload-token", token);
+      await storage.setString("payload-token", payloadToken);
 
       await queryClient.invalidateQueries({ queryKey: ["user"] });
       await queryClient.invalidateQueries({ queryKey: ["user-token"] });

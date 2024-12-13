@@ -1,4 +1,4 @@
-import { Link, Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { Link, Stack, useLocalSearchParams, router } from "expo-router";
 import React, { ReactNode } from "react";
 import { showToastable } from "react-native-toastable";
 import { SizableText, Text, View, XStack, YStack } from "tamagui";
@@ -48,7 +48,6 @@ export default function EventPage() {
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
   const { data: event } = useEventById(id);
   const { data: user } = useUser();
-  const router = useRouter();
 
   const attendance = useAttendance(id);
   const cancelAttendance = useCancelAttendance(id);
@@ -96,6 +95,12 @@ export default function EventPage() {
   const cta = userOwnsEvent ? (
     <FloatingActionButton
       iconAfter={<IconSymbol name="square.and.pencil" color="$color12" />}
+      onPress={() => {
+        router.push({
+          pathname: `/event/[id]/edit`,
+          params: { id: event.id },
+        });
+      }}
       testID="edit-button"
     >
       Edit Event
