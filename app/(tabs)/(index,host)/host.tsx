@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import { Link, router, Stack, useFocusEffect } from "expo-router";
 import { useCallback } from "react";
 import {
@@ -16,19 +15,12 @@ import { EventCard } from "@/components/EventCard";
 import { FloatingActionButton } from "@/components/FloatingActionButton";
 import { IconSymbol } from "@/components/ui/IconSymbol";
 import { useSignOut } from "@/hooks/use-login";
-import { usePayload } from "@/hooks/use-payload";
 import { useUser } from "@/hooks/use-user";
+import { useUserEvents } from "@/hooks/use-user-events";
 
 export default function HostPage() {
   const theme = useTheme();
-
-  const payload = usePayload();
-
-  const { data } = useQuery({
-    queryKey: ["events"],
-    queryFn: () => payload.collections.event.find(),
-  });
-
+  const { data } = useUserEvents();
   const user = useUser();
 
   useFocusEffect(
@@ -80,14 +72,14 @@ export default function HostPage() {
             </Button>
           </YStack>
         )}
-        {(data?.docs.length ?? 0) > 0 ? (
+        {(data?.length ?? 0) > 0 ? (
           <YGroup
             bordered
             size="$5"
             separator={<Separator />}
             overflow="hidden"
           >
-            {data?.docs.map((event) => (
+            {data?.map((event) => (
               <YGroup.Item key={event.id}>
                 <EventCard event={event} />
               </YGroup.Item>
