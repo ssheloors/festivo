@@ -24,6 +24,7 @@ const MAPPING = {
   "mappin.and.ellipse": "location-pin",
   "square.and.pencil": "edit-square",
   xmark: "close",
+  plus: "add",
 } as Partial<
   Record<
     import("expo-symbols").SymbolViewProps["name"],
